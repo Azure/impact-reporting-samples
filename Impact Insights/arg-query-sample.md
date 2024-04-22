@@ -1,4 +1,4 @@
-# Viewing Impact Reports and Insights in Azure REsource Graph Explorer
+# Viewing Impact Reports and Insights in Azure Resource Graph Explorer
 
 ## Permissions needed
 * Impact Reporter Role or
