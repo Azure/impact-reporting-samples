@@ -24,4 +24,17 @@ impactreportresources
 
 ## For a resource URI, Find all reported impacts and insights
 
-[coming soon]
+```kql
+impactreportresources 
+|where ['type'] =~ 'microsoft.impact/workloadimpacts'
+|extend startDateTime=todatetime(properties["startDateTime"])
+|extend impactedResourceId=tolower(properties["impactedResourceId"])
+|where impactedResourceId =~ '<***resource_uri***>'
+|join kind=leftouter  hint.strategy=shuffle (impactreportresources
+|where ['type'] =~ 'microsoft.impact/workloadimpacts/insights'
+|extend insightCategory=tostring(properties['category'])
+|extend eventId=tostring(properties['eventId'])
+|project impactId=tostring(properties["impact"]["impactId"]), insightProperties=properties, insightId=id) on $left.id == $right.impactId
+|project impactedResourceId, impactId=id, insightId, insightProperties, impactProperties=properties
+|order by insightId desc
+```
