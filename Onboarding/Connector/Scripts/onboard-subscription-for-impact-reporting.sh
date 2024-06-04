@@ -1,12 +1,10 @@
 #!/bin/bash
 
-# USAGE : Please refer deploy-cas-help.txt
-
 # Running in debug mode
 # Uncomment to enable debug mode. Make sure you also uncomment set +x in the end of the script.
-# Please DO NOT COMMIT UNCOMMENTED DEBUG FLAG. This would fail the CDPx build as it treats the debug output as stderr.
+# Please DO NOT COMMIT UNCOMMENTED DEBUG FLAG.
 
-set -x
+# set -x
 set -e
 
 print_help () 
