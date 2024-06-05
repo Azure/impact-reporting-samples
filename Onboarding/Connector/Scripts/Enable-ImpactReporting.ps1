@@ -240,11 +240,11 @@ function Test-Input {
   }
 
   if ($FilePath) {
-      Log "Subscription IDs will be read from the file: $FilePath"
       if (-not (Test-Path -Path $FilePath)) {
           Log "Failed to find file: $FilePath. Please provide a valid file path that you have access to"
           exit 1
       }
+      Log "Subscription IDs will be read from the file: $FilePath"
   }
 
   Log "==== All required inputs are present ===="
@@ -257,9 +257,9 @@ function Enable-ImpactReporting {
   # Loop through the array
   foreach ($item in $SubscriptionIds) {
       LoginAzWithPrompt $item
-    #   Register-Feature "Microsoft.Impact" "AzureImpactReportingConnector"
-    #   Register-Feature "Microsoft.Impact" "AllowImpactReporting"
-    #   Add-PermissionsForAlertReading $item
+      Register-Feature "Microsoft.Impact" "AzureImpactReportingConnector"
+      Register-Feature "Microsoft.Impact" "AllowImpactReporting"
+      Add-PermissionsForAlertReading $item
       Deploy-Connector $item
       Log "==== Impact reporting is now enabled on your subscription: $item!! ===="
   }

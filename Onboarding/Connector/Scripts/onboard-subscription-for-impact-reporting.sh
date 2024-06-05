@@ -201,10 +201,10 @@ validate_input()
   [[ -n "$subscription_id" ]] && (log "Using Subscription ID = $subscription_id")
   
   if [[ -n "$file_path" ]]; then
-    log "Subscription IDs will be read from the file: $file_path"
     if [[ ! -f "$file_path" ]]; then
       log "Failed to find file: $file_path. Please provide a valid file path that you have access to" && exit 1
     fi
+    log "Subscription IDs will be read from the file: $file_path"
   fi
 
   log "==== All required inputs are present ===="
