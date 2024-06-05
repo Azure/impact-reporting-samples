@@ -11,12 +11,12 @@ function PrintHelp {
   Write-Host "`n"
   Write-Host "# # ############ USAGE ############ #"
   Write-Host "#"
-  Write-Host "# EnableImpactReporting.ps1"
-  Write-Host "#            -SubscriptionId: The subscription id of the subscription that is getting onboarded to ImpactRP"
-  Write-Host "#            -FilePath: The file path where newline separated list of subscriptions is present"
+  Write-Host "# CreateImpactReportingConnector.ps1"
+  Write-Host "#            -SubscriptionId: The subscription id of the subscription where the connector will be created"
+  Write-Host "#            -FilePath: The file path where newline separated list of subscriptions, where the connector(s) will be created, is present"
   Write-Host "#            -Help: Print this help page"
   Write-Host "# "
-  Write-Host "# This cmdlet is for enabling impact reporting on your subscription(s)."
+  Write-Host "# This cmdlet is used to set-up pre-requisites and create Impact Reporting Connector(s) in one or more subscriptions."
   Write-Host "#"
   Write-Host "# # ############ ##### ############ #"
   Write-Host "`n"
@@ -31,7 +31,7 @@ function CreateCustomRoleJson {
   $json = @{
       "Name" = $RoleName
       "IsCustom" = $true
-      "Description" = "Allows for reading alerts and writing impacts."
+      "Description" = "Allows for reading alerts."
       "Actions" = @(
           "Microsoft.AlertsManagement/alerts/read"
       )
@@ -149,13 +149,13 @@ function Add-PermissionsForAlertReading {
   )
 
   Log "Setting up permissions for alert reading"
-  $RoleName = "Azure-Alerts-Reader-Role" # DND
+  $RoleName = "Azure-Alerts-Reader-Role"
   $ConnectorAppName = "AzureImpactReportingConnector"
 
   $RoleId = (Get-AzRoleDefinition -Name $RoleName).id
   if (-not $RoleId) {
       Log "Creating custom role for alert reading."
-      $CustomRoleJsonFilePath = "/tmp/impact-reporting-role.json"
+      $CustomRoleJsonFilePath = "/tmp/azure-alerts-reader-role-definition.json"
       CreateCustomRoleJson $SubscriptionId $RoleName | Out-File $CustomRoleJsonFilePath
       $RoleId = (New-AzRoleDefinition -InputFile $CustomRoleJsonFilePath).id
       Log "Custom role: $RoleName for alert reading created successfully with role id: $RoleId."
@@ -252,18 +252,18 @@ function Test-Input {
   Log "==== All required inputs are present ===="
 }
 
-function Enable-ImpactReporting {
+function CreateImpactReportingConnectors {
   param (
       [array]$SubscriptionIds
   )
   # Loop through the array
-  foreach ($item in $SubscriptionIds) {
-      LoginAzWithPrompt $item
+  foreach ($CurrentSubscriptionId in $SubscriptionIds) {
+      LoginAzWithPrompt $CurrentSubscriptionId
       Register-Feature "Microsoft.Impact" "AzureImpactReportingConnector"
       Register-Feature "Microsoft.Impact" "AllowImpactReporting"
-      Add-PermissionsForAlertReading $item
-      CreateConnector $item
-      Log "==== Impact reporting is now enabled on your subscription: $item!! ===="
+      Add-PermissionsForAlertReading $CurrentSubscriptionId
+      CreateConnector $CurrentSubscriptionId
+      Log "==== Impact reporting connector is successfully created on your subscription: $CurrentSubscriptionId!! ===="
   }
 }
 
@@ -284,6 +284,6 @@ else {
   $SubscriptionIds = @($SubscriptionId)
 }
 
-Log "==== Enabling impact reporting ===="
-Enable-ImpactReporting -SubscriptionIds $SubscriptionIds
-Log "==== Impact reporting is successfully enabled on your subscription(s) ===="
+Log "==== Creating impact reporting connector(s) ===="
+CreateImpactReportingConnectors -SubscriptionIds $SubscriptionIds
+Log "==== Impact reporting connector is successfully created on your subscription(s), please head on the onboarding guide: <link to it> for next step(s) ===="

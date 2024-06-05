@@ -12,12 +12,12 @@ print_help ()
     log -e "\n"
     echo "# # ############ USAGE ############ #"
     echo "#"
-    echo "# enable-impact-reporting.sh"
-    echo "#            --subscription-id <The subscription id of the subscription that is getting onboarded to ImpactRP>"
-    echo "#            --file-path <The file path where newline separated list of subscriptions is present>"
+    echo "# create-impact-reporting-connector.sh"
+    echo "#            --subscription-id <The subscription id of the subscription where the connector will be created>"
+    echo "#            --file-path <The file path where newline separated list of subscriptions, where the connector(s) will be created, is present>"
     echo "#            --help <Print this help page>"
     echo "# "
-    echo "# This script is for enabling impact reporting on your subscription(s)."
+    echo "# This script is used to set-up pre-requisites and create Impact Reporting Connector(s) in one or more subscriptions."
     echo "#"
     echo "# # ############ ##### ############ #"
 
@@ -210,9 +210,9 @@ validate_input()
   log "==== All required inputs are present ===="
 }
 
-enable_impact_reporting()
+create_impact_reporting_connectors()
 {
-  log "==== Enabling impact reporting ===="
+  log "==== Creating impact reporting connector(s) ===="
   
   # Check if the file is given and exists
   if [ -n "$file_path" ] && [ -f "$file_path" ]; then
@@ -224,14 +224,15 @@ enable_impact_reporting()
   fi
 
   # Print the array
-  for item in "${subscription_ids[@]}"; do
-      az_login_with_prompt "$item"
+  for current_subscription_id in "${subscription_ids[@]}"; do
+      az_login_with_prompt "$current_subscription_id"
       register_feature "Microsoft.Impact" "AzureImpactReportingConnector"
       register_feature "Microsoft.Impact" "AllowImpactReporting"
-      setup_permissions_for_alerts_reading "$item"
-      create_connector "$item"
-      log "==== Impact reporting is now enabled on your subscription: $item!! ===="
+      setup_permissions_for_alerts_reading "$current_subscription_id"
+      create_connector "$current_subscription_id"
+      log "==== Impact reporting connector is successfully created on your subscription: $current_subscription_id!! ===="
   done
+  log "==== Impact reporting connector is successfully created on your subscription(s), please head on the onboarding guide: <link to it> for next step(s) ===="
 }
 
 main()
@@ -248,7 +249,7 @@ main()
   done
   
   validate_input
-  enable_impact_reporting
+  create_impact_reporting_connectors
 }
 
 main "$@"
