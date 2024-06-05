@@ -11,12 +11,12 @@ function PrintHelp {
   Write-Host "`n"
   Write-Host "# # ############ USAGE ############ #"
   Write-Host "#"
-  Write-Host "# onboard-subscription-for-impact-reporting.ps1"
-  Write-Host "#            --subscription-id: The subscription id of the subscription that is getting onboarded to ImpactRP"
-  Write-Host "#            --file-path: The file path where newline separated list of subscriptions is present"
-  Write-Host "#            --help: Print this help page"
+  Write-Host "# EnableImpactReporting.ps1"
+  Write-Host "#            -SubscriptionId: The subscription id of the subscription that is getting onboarded to ImpactRP"
+  Write-Host "#            -FilePath: The file path where newline separated list of subscriptions is present"
+  Write-Host "#            -Help: Print this help page"
   Write-Host "# "
-  Write-Host "# This script is used to onboard subscription(s) to ImpactRP."
+  Write-Host "# This cmdlet is for enabling impact reporting on your subscription(s)."
   Write-Host "#"
   Write-Host "# # ############ ##### ############ #"
   Write-Host "`n"
@@ -181,13 +181,13 @@ function Add-PermissionsForAlertReading {
   Log "Successfully setup permissions for alert reading"
 }
 
-function Deploy-Connector {
+function CreateConnector {
   param (
       [string]$SubscriptionId
   )
 
   $ConnectorName = "AzureMonitorConnector"
-  Log "Deploying connector: $ConnectorName for impact reporting"
+  Log "Creating connector: $ConnectorName for impact reporting"
 
   $request_body = @{
       "properties" = @{
@@ -208,13 +208,13 @@ function Deploy-Connector {
       if ($ProvisioningState -ne "Succeeded")
       {
         $SleepDuration = $SleepDuration * 2
-        Log "Attempt #${AttemptCount}: Connector deployment is in progress. Waiting for $SleepDuration seconds before retrying."
+        Log "Attempt #${AttemptCount}: Connector creation is in progress. Waiting for $SleepDuration seconds before retrying."
         Start-Sleep -Seconds $SleepDuration
         $AttemptCount = $AttemptCount + 1
       }
       else
       {
-        Log "Attempt #${AttemptCount}: Deployment of connector: $ConnectorName is successful."
+        Log "Attempt #${AttemptCount}: Creation of connector: $ConnectorName is successful."
       }
       
   } while ($ProvisioningState -ne "Succeeded")
@@ -228,10 +228,12 @@ function Test-Input {
 
   if ((-not $SubscriptionId) -and (-not $FilePath)) {
       Log "Please provided required input: SubscriptionId or FilePath with list of subscription IDs while invoking the script"
+      PrintHelp
       exit 1
   }
   if ($SubscriptionId -and $FilePath) {
       Log "Please provided either SubscriptionId or FilePath with list of subscription IDs while invoking the script. Do not provide both."
+      PrintHelp
       exit 1
   }
 
@@ -260,7 +262,7 @@ function Enable-ImpactReporting {
       Register-Feature "Microsoft.Impact" "AzureImpactReportingConnector"
       Register-Feature "Microsoft.Impact" "AllowImpactReporting"
       Add-PermissionsForAlertReading $item
-      Deploy-Connector $item
+      CreateConnector $item
       Log "==== Impact reporting is now enabled on your subscription: $item!! ===="
   }
 }

@@ -12,12 +12,12 @@ print_help ()
     log -e "\n"
     echo "# # ############ USAGE ############ #"
     echo "#"
-    echo "# onboard-subscription-for-impact-reporting.sh"
+    echo "# enable-impact-reporting.sh"
     echo "#            --subscription-id <The subscription id of the subscription that is getting onboarded to ImpactRP>"
     echo "#            --file-path <The file path where newline separated list of subscriptions is present>"
     echo "#            --help <Print this help page>"
     echo "# "
-    echo "# This script is used to onboard subscription(s) to ImpactRP."
+    echo "# This script is for enabling impact reporting on your subscription(s)."
     echo "#"
     echo "# # ############ ##### ############ #"
 
@@ -167,11 +167,11 @@ setup_permissions_for_alerts_reading()
   log "Successfully setup permissions for alerts reading" 
 }
 
-deploy_connector()
+create_connector()
 {
   subscription_id=$1
   connector_name="AzureMonitorConnector"
-  log "Deploying connector: $connector_name for impact reporting" 
+  log "Creating connector: $connector_name for impact reporting" 
 
   request_body="{
       \"properties\": \
@@ -185,12 +185,12 @@ deploy_connector()
 
   while ! az rest --method put --url "$url" --body "$request_body" --query "properties.provisioningState" | grep -q "Succeeded"; do
     sleep_duration=$((sleep_duration*2))
-    log "Attempt #$attempt_count: Connector deployment is in progress. Waiting for $sleep_duration seconds before retrying."
+    log "Attempt #$attempt_count: Connector creation is in progress. Waiting for $sleep_duration seconds before retrying."
     sleep "$sleep_duration"
     attempt_count=$((attempt_count+1))
   done 
 
-  log "Deployment of connector: $connector_name is complete" 
+  log "Creation of connector: $connector_name is complete" 
 }
 
 validate_input()
@@ -229,7 +229,7 @@ enable_impact_reporting()
       register_feature "Microsoft.Impact" "AzureImpactReportingConnector"
       register_feature "Microsoft.Impact" "AllowImpactReporting"
       setup_permissions_for_alerts_reading "$item"
-      deploy_connector "$item"
+      create_connector "$item"
       log "==== Impact reporting is now enabled on your subscription: $item!! ===="
   done
 }
