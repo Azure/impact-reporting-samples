@@ -232,7 +232,7 @@ create_impact_reporting_connectors()
       create_connector "$current_subscription_id"
       log "==== Impact reporting connector is successfully created on your subscription: $current_subscription_id!! ===="
   done
-  log "==== Impact reporting connector is successfully created on your subscription(s), please head on the onboarding guide: <link to it> for next step(s) ===="
+  log "==== Impact reporting connector is successfully created on your subscription(s) ===="
 }
 
 main()
