@@ -33,9 +33,9 @@ To ensure the onboarding script works seamlessly, the following permissions are 
    2. Feature flag registration
    3. Impact reporting connector resource creation
 
-2. **Role Creation Permissions**: To create a custom role that can read alerts generated from the subscription, one of the following roles is necessary:
-   1. User Access Administrator
-   2. Role Based Access Control Administrator
+2. **User Access Administrator Permissions**: At the subscription level, this role is needed for executing steps related to:
+   1. Create the custom role that enable us to read alerts
+   2. Assign the custom role to the Azure service principal **'AzureImpactReportingConnector'**
 
 In summary, a combination of these permissions will be sufficient to run the script effectively.
 
@@ -97,7 +97,7 @@ Verify the file path provided with `--file-path` exists and is accessible. Ensur
 ### Script fails to execute with permission errors
 
 Ensure you have **Contributor** permission to log in to Azure, register resource providers, and create connectors in the Azure subscriptions.
-You also need to have either of **'User Access Administrator'** or **'Role Based Access Control Administrator'** permissions to create and assign custom roles.
+You also need to have **'User Access Administrator'** permission to create and assign custom roles.
 
 ### Namespace or feature registration takes too long or fails
 
@@ -107,7 +107,7 @@ These operations can take several minutes. Ensure your Azure account has the **C
 
 1. Ensure the Azure Service Principal **'AzureImpactReportingConnector'** exists by entering it into the search box as shown below, if not wait for a few minutes for it to get created. If it does not get created even after an hour, reach out to the [Impact RP connectors team](mailto:impactrp-preview@microsoft.com).
    ![AzureImpactReportingConnector](Images/Checking%20the%20Service%20Principal.png)
-2. Verify your account has either of **'User Access Administrator'** or **'Role Based Access Control Administrator'** permissions to create roles and assign them.
+2. Verify your account has **'User Access Administrator'** permission to create roles and assign them.
 
 ### Connector creation takes too long
 
