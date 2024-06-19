@@ -22,9 +22,20 @@ For new line separated subscription list in a file
 
 Yes, use the `-FilePath` option with a file containing newline-separated subscription IDs.
 
-### What permissions do I need to run this script?
+### What permissions are needed to run this script?
 
-You need to have **Contributor** permission to log in to Azure, register resource providers, and create connectors in the Azure subscriptions. You also need to have either of **'Owner'**, **'User Access Administrator'** and **'Privileged Role Administrator'** permissions to create and assign custom roles.
+To ensure the onboarding script works seamlessly, the following permissions are required:
+
+1. **Contributor Permissions**: At the subscription level, this role is needed for executing steps related to:
+    a. Resource provider registration
+    b. Feature flag registration
+    c. Impact reporting connector resource creation
+
+2. **Role Creation Permissions**: To create a custom role that can read alerts generated from the subscription, one of the following roles is necessary:
+    a. User Access Administrator
+    b. Role Based Access Control Administrator
+
+In summary, a combination of these permissions will be sufficient to run the script effectively.
 
 ### How do I enable debug mode?
 
@@ -44,15 +55,22 @@ Run the below command
 
 You should see a resource with the name: **AzureMonitorConnector**
 
+Or
+
+1. Navigate to [Azure Resource Graph Explorer](https://portal.azure.com/#view/HubsExtension/ArgQueryBlade)
+2. Run the below query
+
+   ```kql
+    impactreportresources
+        | where name == "AzureMonitorConnector" 
+            and type == "microsoft.impact/connectors"
+   ```
+
+3. The results should look like below, with a row for the connector resource
+
+![Viewing the Connector in ARG](Images/Viewing the Connector in ARG.png)
+
 ### TSG
-
-### Script fails to execute with permission errors
-
-Ensure you have **Contributor** permission to log in to Azure, register resource providers, and create connectors in the Azure subscriptions. You also need to have either of **'Owner'**, **'User Access Administrator'** and **'Privileged Role Administrator'** permissions to create and assign custom roles.
-
-### Script execution stops unexpectedly without completing
-
-Check if the Azure PowerShell module is installed and up to date. Use `Update-Module -Name Az` to update the Azure PowerShell module. Ensure `$ErrorActionPreference` is set to `'Continue'` temporarily to bypass non-critical errors.
 
 ### Error "SubscriptionId or FilePath with list of subscription IDs required"
 
@@ -62,14 +80,24 @@ Make sure to provide either the `-SubscriptionId` parameter or the `-FilePath` p
 
 Verify the file path provided with `-FilePath` exists and is accessible. Ensure the correct path is used and the file is not locked or in use by another process.
 
+### Script fails to execute with permission errors
+
+Ensure you have **Contributor** permission to log in to Azure, register resource providers, and create connectors in the Azure subscriptions.
+You also need to have either of **'User Access Administrator'** or **'Role Based Access Control Administrator'** permissions to create and assign custom roles.
+
+### Script execution stops unexpectedly without completing
+
+Check if the Azure PowerShell module is installed and up to date. Use `Update-Module -Name Az` to update the Azure PowerShell module. Ensure `$ErrorActionPreference` is set to `'Continue'` temporarily to bypass non-critical errors.
+
 ### Namespace or feature registration takes too long or fails
 
 These operations can take several minutes. Ensure your Azure account has the **Contributor** access on the subscription(s). Re-run the script once the required access has been provided. If the issue persists on re-running reach out to the [Impact RP connectors team](mailto:impactrp-preview@microsoft.com)
 
 ### Custom role creation or assignment fails
 
-1. Ensure the Azure Service Principal **'AzureImpactReportingConnector'** exists, if not wait for a few minutes for it to get created. If it does not get created even after an hour, reach out to the [Impact RP connectors team](mailto:impactrp-preview@microsoft.com).
-2. Verify your account has either of **'Owner'**, **'User Access Administrator'** and **'Privileged Role Administrator'** permissions to create roles and assign them.
+1. Ensure the Azure Service Principal **'AzureImpactReportingConnector'** exists by entering it into the search box as shown below, if not wait for a few minutes for it to get created. If it does not get created even after an hour, reach out to the [Impact RP connectors team](mailto:impactrp-preview@microsoft.com).
+   [AzureImpactReportingConnector](Images/Checking%20the%20Service%20Principal.png)
+2. Verify your account has either of **'User Access Administrator'** or **'Role Based Access Control Administrator'** permissions to create roles and assign them.
 
 ### Connector creation takes too long
 
@@ -77,8 +105,28 @@ It can take about 15-20 minutes for the namespace registration to allow the conn
 
 ### Connector creation fails
 
-1. Ensure that the RPs: **Microsoft.Impact** is registered.
+1. Ensure that the RPs: **Microsoft.Impact** is registered. You can do this in 2 ways -
+   1. From the Azure Portal, navigate to your Subscription -> Resource Providers
+      [Viewing the resource provider in portal](Images/Viewing%20the%20Resource%20Provider%20In%20Portal.png)
+
+   2. Run the below command
+
+      ```bash
+      Get-AzResourceProvider -ProviderNamespace Microsoft.Impact 
+      ```
+
+      [Viewing the resource provider in Powershell](Images/Viewing%20the%20Resource%20Provider%20In%20Powershell.png )
+
 2. Ensure that the feature flags: **AllowImpactReporting** and **AzureImpactReportingConnector** are registered against the feature: **Microsoft.Impact**
+   Run the below command
+
+   ```bash
+      Get-AzProviderFeature -ProviderNamespace "Microsoft.Impact" -FeatureName AzureImpactReportingConnector
+      Get-AzProviderFeature -ProviderNamespace "Microsoft.Impact" -FeatureName AllowImpactReporting
+      ```
+
+      [Viewing the feature flags](Images/Viewing%20the%20Feature%20Flags%20In%20Powershell.png)
+
 3. Ensure that you have **Contributor** access to the subscription(s)
 
 This TSG and FAQs aim to cover common scenarios encountered while running the `CreateImpactReportingConnector.ps1` script. For issues not covered here, reviewing the script's output and Azure
