@@ -106,7 +106,7 @@ These operations can take several minutes. Ensure your Azure account has the **C
 ### Custom role creation or assignment fails
 
 1. Ensure the Azure Service Principal **'AzureImpactReportingConnector'** exists by entering it into the search box as shown below, if not wait for a few minutes for it to get created. If it does not get created even after an hour, reach out to the [Impact RP connectors team](mailto:impactrp-preview@microsoft.com).
-   [AzureImpactReportingConnector](Images/Checking%20the%20Service%20Principal.png)
+   ![AzureImpactReportingConnector](Images/Checking%20the%20Service%20Principal.png)
 2. Verify your account has either of **'User Access Administrator'** or **'Role Based Access Control Administrator'** permissions to create roles and assign them.
 
 ### Connector creation takes too long
@@ -117,7 +117,7 @@ It can take about 15-20 minutes for the namespace registration to allow the conn
 
 1. Ensure that the RPs: **Microsoft.Impact** is registered. You can do this in 2 ways -
    1. From the Azure Portal, navigate to your Subscription -> Resource Providers
-      [Viewing the resource provider in portal](Images/Viewing%20the%20Resource%20Provider%20In%20Portal.png)
+      ![Viewing the resource provider in portal](Images/Viewing%20the%20Resource%20Provider%20In%20Portal.png)
 
    2. Run the below command
 
@@ -125,7 +125,7 @@ It can take about 15-20 minutes for the namespace registration to allow the conn
       az provider show -n "Microsoft.Impact" -o json --query "registrationState"
       ```
 
-      [Viewing the resource provider in AzCli](Images/Viewing%20the%20Resource%20Provider%20In%20AzCli.png)
+      ![Viewing the resource provider in AzCli](Images/Viewing%20the%20Resource%20Provider%20In%20AzCli.png)
 
 2. Ensure that the feature flags: **AllowImpactReporting** and **AzureImpactReportingConnector** are registered against the feature: **Microsoft.Impact**
    Run the below command
@@ -135,7 +135,7 @@ It can take about 15-20 minutes for the namespace registration to allow the conn
       az feature list -o json --query "[?contains(name, 'Microsoft.Impact/AzureImpactReportingConnector')].{Name:name,State:properties.state}"
       ```
 
-      [Viewing the feature flags](Images/Viewing%20the%20Feature%20Flags%20In%20AzCli.png)
+      ![Viewing the feature flags](Images/Viewing%20the%20Feature%20Flags%20In%20AzCli.png)
 
 3. Ensure that you have **Contributor** access to the subscription(s)
 
