@@ -29,13 +29,13 @@ Yes, use the `--file-path` option with a file containing newline-separated subsc
 To ensure the onboarding script works seamlessly, the following permissions are required:
 
 1. **Contributor Permissions**: At the subscription level, this role is needed for executing steps related to:
-    a. Resource provider registration
-    b. Feature flag registration
-    c. Impact reporting connector resource creation
+   1. Resource provider registration
+   2. Feature flag registration
+   3. Impact reporting connector resource creation
 
 2. **Role Creation Permissions**: To create a custom role that can read alerts generated from the subscription, one of the following roles is necessary:
-    a. User Access Administrator
-    b. Role Based Access Control Administrator
+   1. User Access Administrator
+   2. Role Based Access Control Administrator
 
 In summary, a combination of these permissions will be sufficient to run the script effectively.
 
