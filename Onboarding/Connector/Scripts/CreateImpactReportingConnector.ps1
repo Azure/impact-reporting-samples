@@ -286,4 +286,4 @@ else {
 
 Log "==== Creating impact reporting connector(s) ===="
 CreateImpactReportingConnectors -SubscriptionIds $SubscriptionIds
-Log "==== Impact reporting connector is successfully created on your subscription(s), please head on the onboarding guide: <link to it> for next step(s) ===="
+Log "==== Impact reporting connector is successfully created on your subscription(s) ===="
