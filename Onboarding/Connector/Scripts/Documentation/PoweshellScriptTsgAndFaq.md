@@ -64,16 +64,16 @@ Verify the file path provided with `-FilePath` exists and is accessible. Ensure 
 
 ### Namespace or feature registration takes too long or fails
 
-These operations can take several minutes. Ensure your Azure account has the **Contributor** access on the subscription(s). Re-run the script once the required access has been provided. If the issue persists on re-running reach out to the [Impact RP connectors team](mailto:impactrp@microsoft.com)
+These operations can take several minutes. Ensure your Azure account has the **Contributor** access on the subscription(s). Re-run the script once the required access has been provided. If the issue persists on re-running reach out to the [Impact RP connectors team](mailto:impactrp-preview@microsoft.com)
 
 ### Custom role creation or assignment fails
 
-1. Ensure the Azure Service Principal **'AzureImpactReportingConnector'** exists, if not wait for a few minutes for it to get created. If it does not get created even after an hour, reach out to the [Impact RP connectors team](mailto:impactrp@microsoft.com).
+1. Ensure the Azure Service Principal **'AzureImpactReportingConnector'** exists, if not wait for a few minutes for it to get created. If it does not get created even after an hour, reach out to the [Impact RP connectors team](mailto:impactrp-preview@microsoft.com).
 2. Verify your account has either of **'Owner'**, **'User Access Administrator'** and **'Privileged Role Administrator'** permissions to create roles and assign them.
 
 ### Connector creation takes too long
 
-It can take about 15-20 minutes for the namespace registration to allow the connector resource creation to take place. Even after 30 minutes if the script has not completed execution, cancel the script execution and re-run it. If this run also get stuck, reach out to the [Impact RP connectors team](mailto:impactrp@microsoft.com)
+It can take about 15-20 minutes for the namespace registration to allow the connector resource creation to take place. Even after 30 minutes if the script has not completed execution, cancel the script execution and re-run it. If this run also get stuck, reach out to the [Impact RP connectors team](mailto:impactrp-preview@microsoft.com)
 
 ### Connector creation fails
 
