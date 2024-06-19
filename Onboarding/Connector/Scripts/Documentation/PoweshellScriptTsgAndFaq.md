@@ -68,7 +68,7 @@ Or
 
 3. The results should look like below, with a row for the connector resource
 
-![Viewing the Connector in ARG](Images/Viewing the Connector in ARG.png)
+![Viewing the Connector in ARG](Images/Viewing%20the%20Connector%20in%20ARG.png)
 
 ### TSG
 
