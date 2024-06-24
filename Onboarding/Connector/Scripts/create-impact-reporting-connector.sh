@@ -1,4 +1,4 @@
-#!/bin/bash
+ #!/bin/bash
 
 # Running in debug mode
 # Uncomment to enable debug mode. Make sure you also uncomment set +x in the end of the script.
@@ -232,7 +232,7 @@ create_impact_reporting_connectors()
       create_connector "$current_subscription_id"
       log "==== Impact reporting connector is successfully created on your subscription: $current_subscription_id!! ===="
   done
-  log "==== Impact reporting connector is successfully created on your subscription(s) ===="
+  log "==== Impact reporting connector is successfully created on your subscription(s), please head on the onboarding guide: https://aka.ms/impactRP/AzMonConnectorDocs for next step(s) ===="
 }
 
 main()

@@ -286,4 +286,4 @@ else {
 
 Log "==== Creating impact reporting connector(s) ===="
 CreateImpactReportingConnectors -SubscriptionIds $SubscriptionIds
-Log "==== Impact reporting connector is successfully created on your subscription(s) ===="
+Log "==== Impact reporting connector is successfully created on your subscription(s), please head on the onboarding guide: https://aka.ms/impactRP/AzMonConnectorDocs for next step(s) ===="
