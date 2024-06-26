@@ -132,10 +132,10 @@ Once your request is approved, you will have the ability to report Impact to you
 
 ### Register your Subscription for Impact Reporting Feature - Script
 
-To onboard multiple subscriptions, please use the collowing script.
+To onboard multiple subscriptions, please use the following script.
 
 > [!WARNING]
-> Please note that the following script is offered with no guaranty from Microsoft.
+> Please note that the following script is offered with no guarantee from Microsoft.
 
 ```bash
 #!/bin/bash
@@ -180,7 +180,7 @@ done
 > The following script is intended to be used for HPC Guest Health Reporting scenario customers.
 
 > [!WARNING]
-> Please note that the following script is offered with no guaranty from Microsoft.
+> Please note that the following script is offered with no guarantee from Microsoft.
 
 ```bash
 #!/bin/bash
