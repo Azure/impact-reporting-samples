@@ -1,10 +1,11 @@
 # Azure Impact Reporting - Documentation
 
-### [Overview]()
+### [Overview](#what-is-azure-impact-reporting)
 [What is Azure Impact Reporting?](#what-is-azure-impact-reporting) <br>
-[Impact Reporting Connectors for Azure Monitor](#impact-reporting-connectors-for-azure-monitor)
+[Impact Reporting Connectors for Azure Monitor](#impact-reporting-connectors-for-azure-monitor) <br>
+[Impact Reporting Connectors - FAQ](#azure-impact-reporting-connectors-for-azure-monitor-faq)
 
-### [Tutorials]()
+### [Tutorials](#register-for-private-preview)
 [Register for Private Preview](#register-for-private-preview) <br>
 [Report Impact on an Azure Virtual Machine](#report-impact-on-an-azure-virtual-machine) <br>
 [Onboard to Azure Impact Reporting](#onboard-to-azure-impact-reporting) <!-- Might not be needed  --><br>
@@ -77,6 +78,41 @@ Back to:
 [[top](#azure-impact-reporting---documentation)]
 [[section](#overview)]
 
+## Azure Impact Reporting Connectors for Azure Monitor FAQ
+
+### How do I enable debug mode?
+
+* **Bash**: Uncomment the `set -x` at the beginning of the script to enable debug mode.
+* **Powershell**: Change `Set-PSDebug -Trace 0 to Set-PSDebug -Trace 1` at the beginning of the script to enable debug mode
+
+### What should I do if I encounter a permission error?
+
+Verify your Azure role and permissions. You may need the help of your Azure administrator to grant you the necessary permissions or roles as defined in the permissions section.
+
+### How can I verify if the connector is successfully created?
+#### Option 1
+* **Bash**:
+    * Step 1: Run the below command: 
+`az rest --method get --url https://management.azure.com/subscriptions/<subscription-id>/providers/Microsoft.Impact/connectors?api-version=2024-05-01-preview`
+    * Step 2: You should see a resource with the name `AzureMonitorConnector`
+* **Powershell**:
+    * Step 1: Run the below command: 
+`(Invoke-AzRestMethod -Method Get -Path subscriptions/<Subscription Id>/providers/Microsoft.Impact/connectors?api-version=2024-05-01-preview).Content`
+`* Step 2: You should see a resource with the name `AzureMonitorConnector`
+
+#### Option 2
+* Step 1: From the Azure Portal, navigate to [Azure Resource Graph Explorer](https://portal.azure.com/#view/HubsExtension/ArgQueryBlade)
+* Step 2: Run the below query: 
+```kql
+impactreportresources  | where name == "AzureMonitorConnector"  and type == "microsoft.impact/connectors"
+```
+* Step 3: The results should look like below, with a row for the connector resource
+
+    ![image](assets/arg.png)
+
+Back to: 
+[[top](#azure-impact-reporting---documentation)]
+[[section](#overview)]
 ## Register for Private Preview
 Follow the steps below to register your subscription for Impact Reporting.
 
@@ -96,6 +132,7 @@ Once your request is approved, you will have the ability to report Impact to you
 
 To onboard multiple subscriptions, please use the collowing script.
 
+> [!WARNING]
 > Please note that the following script is offered with no guaranty from Microsoft.
 
 ```bash
@@ -193,7 +230,7 @@ Back to:
 
 ## Report Impact on an Azure Virtual Machine
 
-
+> [!NOTE]
 > Since most workloads have monitoring in place to detect failures, we recommend creating an integration through a logic app or Azure Function to file an impact report when your monitoring identifies a problem that you think is caused by the infrastructure.
 >
 
@@ -228,18 +265,15 @@ az rest --method PUT --url "https://management.azure.com/subscriptions/<Subscrip
 
 Back to: 
 [[top](#azure-impact-reporting---documentation)]
-[[section](#overview)]
+[[section](#tutorials)]
 ## Onboard to Azure Impact Reporting
 > [!NOTE]
 > Please visit the [API Docs](https://aka.ms/ImpactRP/APIDocs) to learn more about available impact management actions.
 
-<!-- > [!TIP]
-> The SSH key you created can be used the next time your create a VM in Azure. Just select the **Use a key stored in Azure** for **SSH public key source** the next time you create a VM. You already have the private key on your computer, so you won't need to download anything. -->
-
-![image](images/impact-rp-end-to-end.png)
+![image](assets/impact-rp-end-to-end.png)
 
 ### Register your Subscription for Impact Reporting Feature
-
+> [!NOTE]
 > Please contact us at `impactrp-preview@microsoft.com` for any questions.
 
 Follow the steps below to register your subscription for Impact Reporting.
@@ -401,10 +435,11 @@ PUT https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000
 ```
 Back to: 
 [[top](#azure-impact-reporting---documentation)]
-[[section](#overview)]
+[[section](#tutorials)]
 
 ## Report Using a Logic App
 
+>[!TIP]
 > Please visit the [API Docs](https://aka.ms/ImpactRP/APIDocs) to learn more about available impact management actions.
 
 ![image](assets/logic-app-diagram.png)
@@ -428,7 +463,7 @@ ExampleTable
 | where Status =~ "BAD" and ingestion_time() > ago(1m)
 | distinct  ImpactStartTime=TimeStamp, ImpactedResourceId=ResourceId, WorkloadContext=Feature, ImpactCategory="Resource.Availability", ImpactName = hash_sha1(strcat(TimeStamp, ResourceId , Feature, Computer, ingestion_time()))
 ```
-
+> [!NOTE]
 > Please replace the above query with a query to a datastore or source that is supported by Logic Apps that returns the same columns. If all of these columns are not readily available, additional steps must be added to the workflow to generate the missing fields.
 
 ### Steps
@@ -575,7 +610,7 @@ ExampleTable
 
 Back to: 
 [[top](#azure-impact-reporting---documentation)]
-[[section](#overview)]
+[[section](#tutorials)]
 ## View Allowed Impact Categories
 > All Azure resource types are currently supported for impact reporting.
 
@@ -613,9 +648,9 @@ Please review our full list of categories in our [REST API reference](https://ak
 
 Back to: 
 [[top](#azure-impact-reporting---documentation)]
-[[section](#overview)]
+[[section](#tutorials)]
 ## Impact Reporting Connectors TSG
 --Coming soon <br>
 Back to: 
 [[top](#azure-impact-reporting---documentation)]
-[[section](#overview)]
+[[section](#troubleshoot)]
