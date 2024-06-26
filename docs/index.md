@@ -48,9 +48,11 @@ When you create a connector, it is associated with a subscription. When alerts w
 Below are steps needed to create an impact Connector for Azure Monitor Alerts
 
 #### Pre-Requisites
+
 | Type     | Details      |
 | ------------- | ------------- |
-| **Azure RBAC Permissions** | Ensure you have **contributor** access on the subscription you where the resources reside |
+| **Contributor Permissions** | Needed at the subscription scope for executing steps related to: <li>Resource provider registration</li><li>Enable Connector preview feature</li><li>Create the Impact Connector resource</li> |
+| **User Access Administrator Permissions** | Needed at the subscription scope for executing steps related to: <li>Create the custom role that enables the connector to read alerts</li><li>Assign the custom role to the Connector Service</li> |
 | **Command line tools** | [Bash](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli) or [Powershell](https://learn.microsoft.com/en-us/powershell/azure/install-azure-powershell?view=azps-12.0.0) (*not needed if you are using CloudShell*)|
 | **Subscription Id**| A subscription ID, or a file containing a list of subscription IDs  whose alerts are of interest|
 
