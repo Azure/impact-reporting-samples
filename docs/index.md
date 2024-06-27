@@ -652,6 +652,29 @@ Back to:
 [[top](#azure-impact-reporting---documentation)]
 [[section](#tutorials)]
 ## Impact Reporting Connectors TSG
+#### The bash script fails immediately after starting
+Ensure that the script has execution permissions. Use the below command to make it executable.
+chmod `+x create-impact-reporting-connector.sh`
+
+#### In the bash script, azure login fails (az login command not working)
+Ensure [Azure CLI](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli) is installed and updated to the latest version. Try manually logging in using `az login` to check for any additional prompts or errors.
+
+#### Error "**Subscription ID or file path with list of subscription IDs required**"
+**Bash**: Make sure you are providing either `--subscription-id` or `--file-path` argument when executing the script. Do not provide both.
+**Powershell**: Make sure to provide either the `-SubscriptionId` parameter or the  `-FilePath` parameter when invoking the script. Do not provide both.
+
+#### Error "**Failed to find file: [file_path]**"
+**Bash**: Verify the file path provided with `--file-path` exists and is accessible. Ensure the correct path is used.
+**Powershell**: Verify the file path provided with `-FilePath` exists and is accessible. Ensure the correct path is used and the file is not locked or in use by another process.
+
+
+#### The bash script fails immediately after starting
+
+#### The bash script fails immediately after starting
+
+#### The bash script fails immediately after starting
+
+
 --Coming soon <br>
 Back to: 
 [[top](#azure-impact-reporting---documentation)]
