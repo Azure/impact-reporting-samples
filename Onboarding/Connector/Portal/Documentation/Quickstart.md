@@ -35,6 +35,12 @@ Sign in to the [Azure portal](https://portal.azure.com).
 
 In order for the connector to report impacts, our first party app: **AzureImpactReportingConnector** needs to have alerts reader permission. The below steps allow the alert reading permission to our app, by creating a custom role.
 
+## Prerequisites
+
+To create custom roles, you need:
+
+- Permissions to create custom roles, such as [Owner](https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles#owner) or [User Access Administrator](https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles#user-access-administrator)
+
 ### Assigning Azure-Alerts-Reader-Role to 'AzureImpactReportingConnector'
 
 1. Navigate to your subscription, and select **Access Control (IAM)** from the navigation blade
