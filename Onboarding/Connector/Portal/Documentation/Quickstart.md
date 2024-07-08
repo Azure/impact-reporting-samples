@@ -35,7 +35,7 @@ Sign in to the [Azure portal](https://portal.azure.com).
 
 In order for the connector to report impacts, our first party app: **AzureImpactReportingConnector** needs to have alerts reader permission. The below steps allow the alert reading permission to our app, by creating a custom role.
 
-## Prerequisites
+### Prerequisites
 
 To create custom roles, you need:
 
@@ -84,3 +84,17 @@ To create custom roles, you need:
 
 7. Select the **Review + create** button at the bottom of the page
 8. In the **Review + create** tab, click on **Create** button at the bottom of the page
+
+## Troubleshooting
+
+### Connector deployment fails to due to permission errors
+
+Ensure you have **Contributor** permission to log in to Azure, register resource providers, and create connectors in the Azure subscriptions.
+
+### Custom role assignment fails to due to permission errors
+
+You also need to have [Owner](https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles#owner) or [User Access Administrator](https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles#user-access-administrator) role to create and assign custom roles.
+
+### Connector creation takes too long
+
+It can take about 15-20 minutes for the namespace registration to allow the connector resource creation to take place. Even after 30 minutes if the script has not completed execution, cancel the script execution and re-run it. If this run also get stuck, reach out to the [Impact RP connectors team](mailto:impactrp-preview@microsoft.com)
