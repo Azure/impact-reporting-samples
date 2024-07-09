@@ -1,6 +1,5 @@
 ---
-title: Create Azure Monitor connector in the Azure portal
-titleSuffix: Azure SQL Database & Azure Synapse Analytics
+title: Quickstart - Creating a Impact Reporting Connector
 description: Use the Azure portal to create connectors for Azure Monitor alerts
 author: Stuti Srivastava
 ---
