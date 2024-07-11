@@ -56,7 +56,7 @@ Below are steps needed to create an impact Connector for Azure Monitor Alerts
 | **Command line tools** | [Bash](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli) or [Powershell](https://learn.microsoft.com/en-us/powershell/azure/install-azure-powershell?view=azps-12.0.0) (*not needed if you are using CloudShell*)|
 | **Subscription Id**| A subscription ID, or a file containing a list of subscription IDs  whose alerts are of interest|
 
-#### Steps
+#### Create a Connector - Command Line
 
 The deployment scripts does the following:
 * Registers your subscription(s) for Azure Impact Reporting private preview (pre-requisite for using Connectors)
@@ -75,6 +75,78 @@ You will need to execute this script in your Azure environment.
 ###### **Bash**
 * Single Subscription: `./create-impact-reporting-connector.sh --subscription-id <subid>`
 * Multiple subscriptions from file: `./create-impact-reporting-connector.sh --file_path './subscription_ids'
+
+Back to: 
+[[top](#azure-impact-reporting---documentation)]
+[[section](#overview)]
+
+#### Create a Connector - Azure Portal
+Follow the steps below to create a Connector from the Azure Portal.
+
+1. Search for **Impact Reporting Connectors** in Azure portal search
+2. Click on the **Create** button on the left side in the page. The **Create Impact Reporting Connector** page opens
+
+    ![Create Impact Reporting Connector page](assets/create-connector.png)
+
+3. From the **Subscription** drop down select the subscription where the Connector will be created
+4. Under **Instance details**, enter *AzureMonitorConnector* for the **Connector name** and choose *AzureMonitor* for the **Connector type**.
+5. Select the **Review + create** button at the bottom of the page
+6. Once the validations have passed, and the **Review + Create** shows no error, click on **Create** at the bottom of the page
+
+   ![Review + Create tab](assets/review-and-create-tab.png) 
+
+7. The deployment can take several minutes to complete, as there are feature flags that need registration which can take some time to propagate. Meanwhile, head to the next section to enable alert reading from your subscription
+
+Back to: 
+[[top](#azure-impact-reporting---documentation)]
+[[section](#troubleshoot)]
+
+#### Assigning Azure-Alerts-Reader-Role to the Connector
+
+1. Navigate to your subscription, and select **Access Control (IAM)** from the navigation blade
+2. Click **Add** and then click **Add role assignment**. This will open the **Add role assignment** page. 
+3. Under the **Role** tab, in the search bar, type *Azure-Alerts-Reader-Role*. If this role does not exist, head to [Creating the Azure-Alerts-Reader-Role](#creating-the-azure-alerts-reader-role) to create this role. Once the role is created, return back to this step.
+
+    ![Add custom role](assets/Role%20Selection.png)
+
+4. Select the *Azure-Alerts-Reader-Role* and click on **Next** button at the bottom of the page
+5. Under the **Members** tab, select **User, group, or service principal** for **Assign access to**.
+6. Click on **Select members**, which will open the **Select Members** blade on the right side.
+7. Enter **AzureImpactReportingConnector** in the search bar, and click on the AzureImpactReportingConnector application. Then click **Select** button.
+
+    ![Member Assignment](assets/Member%20Selection.png)
+
+8. Select the **Review + assign** button at the bottom of the page
+9. In the **Review + assign** tab, click on **Review + assign** button at the bottom of the page
+
+Back to: 
+[[top](#azure-impact-reporting---documentation)]
+[[section](#overview)]
+
+#### Creating the Azure-Alerts-Reader-Role
+1. Navigate to your subscription, and select **Access Control (IAM)** from the navigation blade
+2. Click **Add** and then click **Add custom role**. This will open the **Create a custom role** page
+
+    ![Add custom role](assets/Add%20Custom%20Role.png)
+
+3. Under the **Basics** tab, enter the name **Azure-Alerts-Reader-Role** for the **Custom role name**. Leave others as defaults and click on **Next** on the bottom of the page
+
+    ![Basics tab](assets/Basics%20Tab.png)
+
+4. Under the **Permissions** tab, click on **Add permissions**. On the right side, **Add permissions** blade will open
+
+    ![Basics tab](assets/Permissions%20Tab.png)
+
+5. Enter *Microsoft.AlertsManagement/alerts/read* in the search bar
+
+    ![Basics tab](assets/Add%20Permissions.png)
+
+6. Select the tile **Microsoft.AlertsManagement**, which will take you to the **Microsoft.AlertsManagement permissions** blade. Select the permission: **Read: Read alerts**. Click on **Add**
+
+    ![Permission Selection](assets/Permission%20Selection.png)
+
+7. Select the **Review + create** button at the bottom of the page
+8. In the **Review + create** tab, click on **Create** button at the bottom of the page
 
 Back to: 
 [[top](#azure-impact-reporting---documentation)]
@@ -682,7 +754,8 @@ These operations can take several minutes. Ensure your Azure account has the Con
     ![image](assets/az_search.png)
 2.	Verify your account has `User Access Administrator` permission to create roles and assign them.
 #### Connector creation takes too long
-It can take about 15-20 minutes for the namespace registration to allow the connector resource creation to take place. Even after 30 minutes if the script has not completed execution, cancel the script execution and re-run it. If this run also get stuck, reach out to the [Impact Reporting connectors team](mailto:impactrp-preview@microsoft.com).
+It may take 15-20 minutes for the namespace registration to allow the connector resource creation to take place. 
+If the script has not completed execution after 30 minutes, cancel the execution and re-run it. If this issue persists, reach out to the [Impact Reporting Connectors team](mailto:impactrp-preview@microsoft.com)
 
 #### Connector creation fails
 
@@ -706,7 +779,16 @@ It can take about 15-20 minutes for the namespace registration to allow the conn
         ![image](assets/run_pwsh.png)
 3.	Ensure that you have Contributor access to the subscription(s)
 
-This covers the common scenarios encountered while onboarding the connector. For issues not covered here, reach out to the [Impact Reporting connectors team](mailto:impactrp-preview@microsoft.com).
+This covers the common scenarios encountered while onboarding the connector. For issues not covered here, reach out to the [Impact Reporting Connectors team](mailto:impactrp-preview@microsoft.com).
+
+#### Connector deployment fails to due to permission errors
+
+Ensure you have **Contributor** permission to log in to Azure, register resource providers, and create connectors in the Azure subscriptions.
+
+#### Custom role assignment fails to due to permission errors
+
+You also need to have [Owner](https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles#owner) or [User Access Administrator](https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles#user-access-administrator) role to create and assign custom roles.
+
 
 Back to: 
 [[top](#azure-impact-reporting---documentation)]
