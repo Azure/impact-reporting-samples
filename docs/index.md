@@ -789,7 +789,10 @@ Ensure you have **Contributor** permission to log in to Azure, register resource
 
 You also need to have [Owner](https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles#owner) or [User Access Administrator](https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles#user-access-administrator) role to create and assign custom roles.
 
+#### Connector deployment fails with: The resource type could not be found in the namespace 'Microsoft.Impact' for api version '2024-05-01-preview'
 
-Back to: 
+Feature flag registration is required for connector to become available as a deployable resource. It can take about 15-20 minutes for this process to complete. Retry after 30 minutes and the connector deployment will succeed.
+
+Back to:
 [[top](#azure-impact-reporting---documentation)]
 [[section](#troubleshoot)]
