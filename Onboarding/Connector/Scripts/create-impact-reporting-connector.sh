@@ -299,9 +299,9 @@ create_impact_reporting_connectors()
 
   for current_subscription_id in "${subscription_ids[@]}"; do
       az_login_with_prompt "$current_subscription_id"
-      # verify_permissions "$current_subscription_id" "$user_principal_name"
-      # register_feature "Microsoft.Impact" "AzureImpactReportingConnector"
-      # register_feature "Microsoft.Impact" "AllowImpactReporting"
+      verify_permissions "$current_subscription_id" "$user_principal_name"
+      register_feature "Microsoft.Impact" "AzureImpactReportingConnector"
+      register_feature "Microsoft.Impact" "AllowImpactReporting"
       setup_permissions_for_alerts_reading "$current_subscription_id"
       create_connector "$current_subscription_id"
       log "==== Impact reporting connector is successfully created on your subscription: $current_subscription_id!! ===="
