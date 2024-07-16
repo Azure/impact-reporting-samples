@@ -46,11 +46,17 @@ function CreateCustomRoleJson {
 
 function Log {
   param (
-      [string]$Message
+      [string]$Message,
+      [string]$ForegroundColor
   )
 
   $date = Get-Date
-  Write-Host "$date - $Message" 2>&1
+  if (-not $ForegroundColor) {
+    Write-Host "$date - $Message"
+  }
+  else {
+    Write-Host "$date - $Message" -ForegroundColor $ForegroundColor
+  }
 }
 
 function LoginAzWithPrompt {
@@ -149,33 +155,32 @@ function Add-PermissionsForAlertReading {
   )
 
   Log "Setting up permissions for alert reading"
-  $RoleName = "Azure-Alerts-Reader-Role"
   $ConnectorAppName = "AzureImpactReportingConnector"
 
-  $RoleId = (Get-AzRoleDefinition -Name $RoleName).id
+  $RoleId = (Get-AzRoleDefinition -Name $ALERTS_READER_ROLE_NAME).id
   if (-not $RoleId) {
-      Log "Creating custom role for alert reading."
+      Log "Creating custom role: '$ALERTS_READER_ROLE_NAME' for the Impact Reporting Connector resource to read alerts in this subscription"
       $CustomRoleJsonFilePath = "/tmp/azure-alerts-reader-role-definition.json"
-      CreateCustomRoleJson $SubscriptionId $RoleName | Out-File $CustomRoleJsonFilePath
+      CreateCustomRoleJson $SubscriptionId $ALERTS_READER_ROLE_NAME | Out-File $CustomRoleJsonFilePath
       $RoleId = (New-AzRoleDefinition -InputFile $CustomRoleJsonFilePath).id
-      Log "Custom role: $RoleName for alert reading created successfully with role id: $RoleId."
+      Log "Custom role: $ALERTS_READER_ROLE_NAME for alert reading created successfully with role id: $RoleId."
       Remove-Item -Path $CustomRoleJsonFilePath
   }
   else {
-      Log "Custom role: $RoleName for alert reading already exists with role id: $RoleId."
+      Log "Custom role: $ALERTS_READER_ROLE_NAME for alert reading already exists with role id: $RoleId."
   }
 
-  Log "Assigning the custom role: $RoleName to the reporting app: $ConnectorAppName"
+  Log "Assigning the custom role: $ALERTS_READER_ROLE_NAME to the reporting app: $ConnectorAppName"
   $ConnectorPrincipalId = (Get-AzADServicePrincipal -DisplayName $ConnectorAppName).id
 
   $AssignedCustomRole = Get-AzRoleAssignment -ObjectId $ConnectorPrincipalId -RoleDefinitionId $RoleId -Scope "/subscriptions/$SubscriptionId"
 
   if (-not $AssignedCustomRole) {
       New-AzRoleAssignment -ObjectId $ConnectorPrincipalId -RoleDefinitionId $RoleId -Scope "/subscriptions/$SubscriptionId"
-      Log "Custom role: $RoleName assigned to the reporting app: $ConnectorAppName"
+      Log "Custom role: $ALERTS_READER_ROLE_NAME assigned to the reporting app: $ConnectorAppName"
   }
   else {
-      Log "Custom role: $RoleName already assigned to the reporting app: $ConnectorAppName"
+      Log "Custom role: $ALERTS_READER_ROLE_NAME already assigned to the reporting app: $ConnectorAppName"
   }
 
   Log "Successfully setup permissions for alert reading"
@@ -203,18 +208,30 @@ function CreateConnector {
   $ProvisioningState=""
   do
   {
-      $ResponseBody = (Invoke-AzRestMethod -Method Put -Path $Path -Payload $request_body).Content | ConvertFrom-Json
+      $Response = (Invoke-AzRestMethod -Method Put -Path $Path -Payload $request_body)
+      $ResponseContent = $Response.Content
+      $StatusCode = $Response.StatusCode
+      if ( $StatusCode -eq 409 ) {
+          Log "An Azure Monitor connector already exists in this subscription. A new connector creation is not required." -ForegroundColor yellow
+          break;
+      }
+      $ResponseBody = $ResponseContent | ConvertFrom-Json
       $ProvisioningState = $ResponseBody.properties.provisioningState 
-      if ($ProvisioningState -ne "Succeeded")
+      if ($StatusCode -eq 404 -and $ResponseBody.error.code -eq "InvalidResourceType" )
       {
         $SleepDuration = $SleepDuration * 2
         Log "Attempt #${AttemptCount}: Connector creation is in progress. Waiting for $SleepDuration seconds before retrying."
         Start-Sleep -Seconds $SleepDuration
         $AttemptCount = $AttemptCount + 1
       }
-      else
+      elseif($ProvisioningState -eq "Succeeded")
       {
         Log "Attempt #${AttemptCount}: Creation of connector: $ConnectorName is successful."
+      }
+      else
+      {
+        Write-Host "Connector creation failed with status code: $StatusCode and response body: $ResponseContent" -ForegroundColor red
+        exit 1;
       }
       
   } while ($ProvisioningState -ne "Succeeded")
@@ -252,13 +269,70 @@ function Test-Input {
   Log "==== All required inputs are present ===="
 }
 
+function HasRoleAssignment {
+  param (
+      [string]$RoleName,
+      [string]$SubscriptionId
+  )
+
+  $RoleDefinitionName = (Get-AzRoleAssignment -ObjectId $AzureAdId -RoleDefinitionName $RoleName -Scope /subscriptions/$SubscriptionId).RoleDefinitionName
+  return $RoleName -eq $RoleDefinitionName
+}
+
+function CheckRoleAssignmentForSettingUpPermissions {
+  param (
+      [string]$SubscriptionId
+  )
+
+  $RoleId = (Get-AzRoleDefinition -Name $ALERTS_READER_ROLE_NAME).id
+  if (-not $roleId) {
+      Write-Host "Custom role: $ALERTS_READER_ROLE_NAME for alerts reading does not exist. Checking for built-in role: User Access Administrator role assignment as that is required for custom role creation"
+      if (-not (HasRoleAssignment -SubscriptionId $SubscriptionId -RoleName "User Access Administrator")) {
+          Write-Host "You are not a 'User Access Administrator' on the subscription: $SubscriptionId.  Please reach out to someone in your organization who can assign one of these roles to you. Once you have them, run this script again."
+          exit 1
+      }
+  }
+
+  if (-not (HasRoleAssignment -SubscriptionId $SubscriptionId -RoleName "Role Based Access Administrator") -and -not (HasRoleAssignment -SubscriptionId $SubscriptionId -RoleName "User Access Administrator")) {
+      Write-Host "You are neither a 'Role Based Access Administrator' nor a 'User Access Administrator' on the subscription: $SubscriptionId which is required to assign alert reading permission to the connectors app. Please reach out to someone in your organization who can assign one of these roles to you. Once you have them, run this script again."
+      exit 1
+  }
+}
+
+function CheckRoleAssignmentForDeployment {
+  param (
+      [string]$SubscriptionId
+  )
+
+  if (-not (HasRoleAssignment -SubscriptionId $SubscriptionId -RoleName "Contributor")) {
+      Write-Host "You are not a 'Contributor' on the subscription: $SubscriptionId which is required to create the connector on your subscription. Please reach out to someone in your organization who can assign one of these roles to you. Once you have them, run this script again."
+      exit 1
+  }
+}
+
+function VerifyPermissions {
+  param (
+      [string]$SubscriptionId
+  )
+
+  Write-Host "Verifying permissions for the subscription: $SubscriptionId"
+
+  if (HasRoleAssignment -SubscriptionId $SubscriptionId -RoleName "Owner") {
+      Write-Host "Permissions are already set for the subscription: $SubscriptionId"
+  } else {
+      CheckRoleAssignmentForSettingUpPermissions -SubscriptionId $SubscriptionId
+      CheckRoleAssignmentForDeployment -SubscriptionId $SubscriptionId 
+  }
+}
+
 function CreateImpactReportingConnectors {
   param (
       [array]$SubscriptionIds
   )
-  # Loop through the array
+
   foreach ($CurrentSubscriptionId in $SubscriptionIds) {
       LoginAzWithPrompt $CurrentSubscriptionId
+      VerifyPermissions $CurrentSubscriptionId
       Register-Feature "Microsoft.Impact" "AzureImpactReportingConnector"
       Register-Feature "Microsoft.Impact" "AllowImpactReporting"
       Add-PermissionsForAlertReading $CurrentSubscriptionId
@@ -283,6 +357,9 @@ else {
   # Create an array with a single element
   $SubscriptionIds = @($SubscriptionId)
 }
+
+$ALERTS_READER_ROLE_NAME = "Azure-Alerts-Reader-Role"
+$AzureAdId = (Get-AzADUser -SignedIn).Id
 
 Log "==== Creating impact reporting connector(s) ===="
 CreateImpactReportingConnectors -SubscriptionIds $SubscriptionIds
