@@ -141,7 +141,7 @@ setup_permissions_for_alerts_reading()
 
   role_id=$(az role definition list -n "$ALERTS_READER_ROLE_NAME"  --query [].id -o tsv)
   if [ ! "$role_id" ]; then
-    log "Creating custom role for alerts reading."
+    log "Creating custom role: '$ALERTS_READER_ROLE_NAME' for the Impact Reporting Connector resource to read alerts in this subscription"
     
     custom_role_json_file="/tmp/custom-role.json"
     create_custom_role_json_file "$subscription_id" "$ALERTS_READER_ROLE_NAME" "$custom_role_json_file"
@@ -188,7 +188,7 @@ create_connector()
     output=$(az rest --method put --url "$url" --body "$request_body" 2>&1 || true)
     if echo "$output" | grep "Conflict"; then
       YELLOW='\033[0;33m'
-      echo -e "${YELLOW}A connector is already deployed in this subscription. A new connector will not be deployed."
+      echo -e "${YELLOW}An Azure Monitor connector already exists in this subscription. A new connector creation is not required."
       tput sgr0
       break;
     elif echo "$output" | grep "InvalidResourceType"; then
@@ -245,13 +245,13 @@ check_role_assignment_for_setting_up_permissions()
   if [ ! "$role_id" ]; then
     log "Custom role: $ALERTS_READER_ROLE_NAME for alerts reading does not exist. Checking for built-in role: User Access Administrator role assignment as that is required for custom role creation"
     if ! has_role_assignment "$user_principal_name" "User Access Administrator" ; then
-      log "You are not a 'User Access Administrator' on the subscription: $subscription_id. Please get the role assigned to proceed"
+      log "You are not a 'User Access Administrator' on the subscription: $subscription_id. Please reach out to someone in your organization who can assign one of these roles to you. Once you have them, run this script again."
       exit 1
     fi
   fi
 
   if ! has_role_assignment "$user_principal_name" "Role Based Access Administrator" && ! has_role_assignment "$user_principal_name" "User Access Administrator" ; then
-    log "You are neither a 'Role Based Access Administrator' nor a 'User Access Administrator' on the subscription: $subscription_id which is required to assign alert reading permission to the connectors app. Please get the role assigned to proceed"
+    log "You are neither a 'Role Based Access Administrator' nor a 'User Access Administrator' on the subscription: $subscription_id which is required to assign alert reading permission to the connectors app. Please reach out to someone in your organization who can assign one of these roles to you. Once you have them, run this script again."
     exit 1
   fi
 }
@@ -262,7 +262,7 @@ check_role_assignment_for_deployment()
   user_principal_name=$2
 
   if ! has_role_assignment "$user_principal_name" "Contributor"; then
-      log "You are not a 'Contributor' on the subscription: $subscription_id which is required to create the connector on your subscription. Please get the role assigned to proceed."
+      log "You are not a 'Contributor' on the subscription: $subscription_id which is required to create the connector on your subscription. Please reach out to someone in your organization who can assign one of these roles to you. Once you have them, run this script again.."
       exit 1
     fi   
 }

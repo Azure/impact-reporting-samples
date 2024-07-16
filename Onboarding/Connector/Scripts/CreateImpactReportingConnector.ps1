@@ -52,10 +52,10 @@ function Log {
 
   $date = Get-Date
   if (-not $ForegroundColor) {
-    Write-Host "$date - $Message" 2>&1
+    Write-Host "$date - $Message"
   }
   else {
-    Write-Host "$date - $Message" -ForegroundColor $ForegroundColor 2>&1
+    Write-Host "$date - $Message" -ForegroundColor $ForegroundColor
   }
 }
 
@@ -159,7 +159,7 @@ function Add-PermissionsForAlertReading {
 
   $RoleId = (Get-AzRoleDefinition -Name $ALERTS_READER_ROLE_NAME).id
   if (-not $RoleId) {
-      Log "Creating custom role for alert reading."
+      Log "Creating custom role: '$ALERTS_READER_ROLE_NAME' for the Impact Reporting Connector resource to read alerts in this subscription"
       $CustomRoleJsonFilePath = "/tmp/azure-alerts-reader-role-definition.json"
       CreateCustomRoleJson $SubscriptionId $ALERTS_READER_ROLE_NAME | Out-File $CustomRoleJsonFilePath
       $RoleId = (New-AzRoleDefinition -InputFile $CustomRoleJsonFilePath).id
@@ -212,7 +212,7 @@ function CreateConnector {
       $ResponseContent = $Response.Content
       $StatusCode = $Response.StatusCode
       if ( $StatusCode -eq 409 ) {
-          Log "A connector is already deployed in this subscription. A new connector will not be deployed." -ForegroundColor yellow
+          Log "An Azure Monitor connector already exists in this subscription. A new connector creation is not required." -ForegroundColor yellow
           break;
       }
       $ResponseBody = $ResponseContent | ConvertFrom-Json
@@ -288,13 +288,13 @@ function CheckRoleAssignmentForSettingUpPermissions {
   if (-not $roleId) {
       Write-Host "Custom role: $ALERTS_READER_ROLE_NAME for alerts reading does not exist. Checking for built-in role: User Access Administrator role assignment as that is required for custom role creation"
       if (-not (HasRoleAssignment -SubscriptionId $SubscriptionId -RoleName "User Access Administrator")) {
-          Write-Host "You are not a 'User Access Administrator' on the subscription: $SubscriptionId. Please get the role assigned to proceed"
+          Write-Host "You are not a 'User Access Administrator' on the subscription: $SubscriptionId.  Please reach out to someone in your organization who can assign one of these roles to you. Once you have them, run this script again."
           exit 1
       }
   }
 
   if (-not (HasRoleAssignment -SubscriptionId $SubscriptionId -RoleName "Role Based Access Administrator") -and -not (HasRoleAssignment -SubscriptionId $SubscriptionId -RoleName "User Access Administrator")) {
-      Write-Host "You are neither a 'Role Based Access Administrator' nor a 'User Access Administrator' on the subscription: $SubscriptionId which is required to assign alert reading permission to the connectors app. Please get the role assigned to proceed"
+      Write-Host "You are neither a 'Role Based Access Administrator' nor a 'User Access Administrator' on the subscription: $SubscriptionId which is required to assign alert reading permission to the connectors app. Please reach out to someone in your organization who can assign one of these roles to you. Once you have them, run this script again."
       exit 1
   }
 }
@@ -305,7 +305,7 @@ function CheckRoleAssignmentForDeployment {
   )
 
   if (-not (HasRoleAssignment -SubscriptionId $SubscriptionId -RoleName "Contributor")) {
-      Write-Host "You are not a 'Contributor' on the subscription: $SubscriptionId which is required to create the connector on your subscription. Please get the role assigned to proceed."
+      Write-Host "You are not a 'Contributor' on the subscription: $SubscriptionId which is required to create the connector on your subscription. Please reach out to someone in your organization who can assign one of these roles to you. Once you have them, run this script again."
       exit 1
   }
 }
