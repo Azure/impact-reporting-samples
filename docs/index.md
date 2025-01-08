@@ -156,18 +156,29 @@ Back to:
 
 ## Impact Reporting Connectors for Dynatrace
 
+Back to: 
+[[top](#azure-impact-reporting---documentation)]
+[[section](#impact-reporting-connectors-for-dynatrace)]
 ### How It Works
 
+Back to: 
+[[top](#azure-impact-reporting---documentation)]
+[[section](#impact-reporting-connectors-for-dynatrace)]
 ### Deploy The Impact Reporting App
 
+Back to: 
+[[top](#azure-impact-reporting---documentation)]
+[[section](#impact-reporting-connectors-for-dynatrace)]
 #### Pre-requisities
 
 #### Steps
 
+Back to: 
+[[top](#azure-impact-reporting---documentation)]
+[[section](#impact-reporting-connectors-for-dynatrace)]
 ## Azure Impact Reporting Connectors for Azure Monitor FAQ
 
 ### How do I enable debug mode?
-
 * **Bash**: Uncomment the `set -x` at the beginning of the script to enable debug mode.
 * **Powershell**: Change `Set-PSDebug -Trace 0 to Set-PSDebug -Trace 1` at the beginning of the script to enable debug mode
 
