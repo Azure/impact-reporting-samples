@@ -3,6 +3,7 @@
 ### [Overview](#what-is-azure-impact-reporting)
 [What is Azure Impact Reporting?](#what-is-azure-impact-reporting) <br>
 [Impact Reporting Connectors for Azure Monitor](#impact-reporting-connectors-for-azure-monitor) <br>
+[Impact Reporting Connectors for Dynatrace](#impact-reporting-connectors-for-dynatrace) <br>
 [Impact Reporting Connectors - FAQ](#azure-impact-reporting-connectors-for-azure-monitor-faq)
 
 ### [Tutorials](#register-for-private-preview)
@@ -151,6 +152,17 @@ Back to:
 Back to: 
 [[top](#azure-impact-reporting---documentation)]
 [[section](#overview)]
+
+
+## Impact Reporting Connectors for Dynatrace
+
+### How It Works
+
+### Deploy The Impact Reporting App
+
+#### Pre-requisities
+
+#### Steps
 
 ## Azure Impact Reporting Connectors for Azure Monitor FAQ
 
