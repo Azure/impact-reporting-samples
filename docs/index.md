@@ -155,6 +155,7 @@ Back to:
 
 
 ## Impact Reporting Connectors for Dynatrace
+Integrating ImpactRP with Dynatrace will allow Azure customers to automatically send impacts to ImpactRP and also recieve insights back
 
 Back to: 
 [[top](#azure-impact-reporting---documentation)]
