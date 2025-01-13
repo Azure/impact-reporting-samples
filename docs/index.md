@@ -158,7 +158,7 @@ Back to:
 Installing the ImpactRP app on the Dynatrace hub allows customers to easily send impacts to ImpactRP for investigations.
 This integration also enables customers to view insights received from ImpactRP.
 
-![image](assets/DT Connector.png) //kz
+![image](assets/DTConnector.png)
 
 Back to: 
 [[top](#azure-impact-reporting---documentation)]
@@ -194,7 +194,7 @@ and confirm the installation. To complete this step, the user must have the app-
 
 
 #### 2. Dynatrace Settings: 
-To make calls to AAD and ARM: 
+To make calls to AAD and ARM:    
 
     a) Go to Dynatrace Home --> Click Search on the left Panel  
     b) Search for 'Limit outbound connections' 
