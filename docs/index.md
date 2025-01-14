@@ -164,8 +164,8 @@ Back to:
 [[top](#azure-impact-reporting---documentation)]
 [[section](#impact-reporting-connectors-for-dynatrace)]
 
-### How is works
-This integration is based on an ImpactRP app that will installed and uploaded in the Dynatrace hub. This would reside within the Azure tenant. On onboarding, the user will need to provide the list of subscriptons that they would want to report an impact against. To note, this a 1: N relation. Which means, a single app ID for multiple subscriptions.(details below on the onboarding script and installation). Once the customer successfully installs the app and onboards to our program, impacts would be sent to ImpactRP using a secure pipeline. ImpactRP would recieve an impact whenever a problem is triggered by DavisAI. On the creation of the problem, ImpactRP would fetch required details from GRAIL, which would assist in recieving the App ID, secret and token from the credential vault and EAD. This would then transalate the problem ID as an Impact to ImpactRP.
+### How it works
+This integration is based on an ImpactRP app that will installed and uploaded in the Dynatrace hub. This would reside within the Azure tenant. On onboarding, the user will need to provide the list of subscriptions that they would want to report an impact against. To note, this a 1: N relation. Which means, a single app ID for multiple subscriptions.(details below on the onboarding script and installation). Once the customer successfully installs the app and onboards to our program, impacts would be sent to ImpactRP using a secure pipeline. ImpactRP would receive an impact whenever a problem is triggered by DavisAI. On the creation of the problem, ImpactRP would fetch required details from GRAIL, which would assist in recieving the App ID, secret and token from the credential vault and EAD. This would then translate the problem ID as an Impact to ImpactRP.
 
 ImpactRP would consume the problems and feed it into multiple internal intelligent systems to correlate and provide insights back to the user. These insights will then be found on the users Dynatrace hub, by the 'Insights' tab. 
 
