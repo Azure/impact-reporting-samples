@@ -1,4 +1,4 @@
-# For the powershell script
+# For the bash script
 
 ## FAQ
 
@@ -8,19 +8,21 @@ Use the below commands
 
 For single subscription
 
-```powershell
-.\CreateImpactReportingConnector.ps1 -SubscriptionId <subscription_id>
+```bash
+chmod +x create-impact-reporting-connector.sh
+./create-impact-reporting-connector.sh --subscription-id <subscription_id>
 ```
 
 For new line separated subscription list in a file
 
-```powershell
-.\CreateImpactReportingConnector.ps1 -FilePath <file_path>
+```bash
+chmod +x create-impact-reporting-connector.sh
+./create-impact-reporting-connector.sh --file-path <file_path>
 ```
 
 ### Can I run this script for multiple subscriptions at once?
 
-Yes, use the `-FilePath` option with a file containing newline-separated subscription IDs.
+Yes, use the `--file-path` option with a file containing newline-separated subscription IDs.
 
 ### What permissions are needed to run this script?
 
@@ -39,7 +41,7 @@ In summary, a combination of these permissions will be sufficient to run the scr
 
 ### How do I enable debug mode?
 
-Change `Set-PSDebug -Trace 0` to `Set-PSDebug -Trace 1` at the beginning of the script to enable debug mode
+Uncomment the `set -x` at the beginning of the script to enable debug mode.
 
 ### What should I do if I encounter a permission error?
 
@@ -47,10 +49,10 @@ Verify your Azure role and permissions. You may need the help of your Azure admi
 
 ### How can I verify if the connector is successfully created?
 
-Run the below command
+Run the below command in AzCli
 
-```powershell
-(Invoke-AzRestMethod -Method Get -Path subscriptions/<Subscription Id>/providers/Microsoft.Impact/connectors?api-version=2024-05-01-preview).Content
+```bash
+az rest --method get --url "https://management.azure.com/subscriptions/<subscription-id>/providers/Microsoft.Impact/connectors?api-version=2024-05-01-preview"
 ```
 
 You should see a resource with the name: **AzureMonitorConnector**
@@ -70,24 +72,32 @@ Or
 
 ![Viewing the Connector in ARG](Images/Viewing%20the%20Connector%20in%20ARG.png)
 
-### TSG
+### Troubleshooting Guide (TSG)
 
-### Error "SubscriptionId or FilePath with list of subscription IDs required"
+### The bash script fails immediately after starting
 
-Make sure to provide either the `-SubscriptionId` parameter or the `-FilePath` parameter when invoking the script. Do not provide both.
+Ensure that the script has execution permissions. Use the below command to make it executable.
 
-### Error "Failed to find file: [FilePath]"
+```bash
+chmod +x create-impact-reporting-connector.sh
+```
 
-Verify the file path provided with `-FilePath` exists and is accessible. Ensure the correct path is used and the file is not locked or in use by another process.
+### Azure login fails (az login command not working)
+
+Ensure [Azure CLI](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli) is installed and updated to the latest version. Try manually logging in using `az login` to check for any additional prompts or errors.
+
+### Error "Subscription ID or file path with list of subscription IDs required"
+
+Make sure you are providing either `--subscription-id` or `--file-path` argument when executing the script. Do not provide both.
+
+### Error "Failed to find file: [file_path]"
+
+Verify the file path provided with `--file-path` exists and is accessible. Ensure the correct path is used.
 
 ### Script fails to execute with permission errors
 
 Ensure you have **Contributor** permission to log in to Azure, register resource providers, and create connectors in the Azure subscriptions.
 You also need to have **'User Access Administrator'** permission to create and assign custom roles.
-
-### Script execution stops unexpectedly without completing
-
-Check if the Azure PowerShell module is installed and up to date. Use `Update-Module -Name Az` to update the Azure PowerShell module. Ensure `$ErrorActionPreference` is set to `'Continue'` temporarily to bypass non-critical errors.
 
 ### Namespace or feature registration takes too long or fails
 
@@ -112,21 +122,21 @@ It can take about 15-20 minutes for the namespace registration to allow the conn
    2. Run the below command
 
       ```bash
-      Get-AzResourceProvider -ProviderNamespace Microsoft.Impact 
+      az provider show -n "Microsoft.Impact" -o json --query "registrationState"
       ```
 
-      ![Viewing the resource provider in Powershell](Images/Viewing%20the%20Resource%20Provider%20In%20Powershell.png )
+      ![Viewing the resource provider in AzCli](Images/Viewing%20the%20Resource%20Provider%20In%20AzCli.png)
 
 2. Ensure that the feature flags: **AllowImpactReporting** and **AzureImpactReportingConnector** are registered against the feature: **Microsoft.Impact**
    Run the below command
 
    ```bash
-      Get-AzProviderFeature -ProviderNamespace "Microsoft.Impact" -FeatureName AzureImpactReportingConnector
-      Get-AzProviderFeature -ProviderNamespace "Microsoft.Impact" -FeatureName AllowImpactReporting
+      az feature list -o json --query "[?contains(name, 'Microsoft.Impact/AllowImpactReporting')].{Name:name,State:properties.state}"
+      az feature list -o json --query "[?contains(name, 'Microsoft.Impact/AzureImpactReportingConnector')].{Name:name,State:properties.state}"
       ```
 
-      ![Viewing the feature flags](Images/Viewing%20the%20Feature%20Flags%20In%20Powershell.png)
+      ![Viewing the feature flags](Images/Viewing%20the%20Feature%20Flags%20In%20AzCli.png)
 
 3. Ensure that you have **Contributor** access to the subscription(s)
 
-This TSG and FAQs aim to cover common scenarios encountered while running the `CreateImpactReportingConnector.ps1` script. For issues not covered here, reviewing the script's output and Azure
+This covers the common scenarios encountered while running the `create-impact-reporting-connector.sh` script. For issues not covered here, create a github issue [here](https://github.com/Azure/impact-reporting-samples/issues/new?template=Blank+issue)
