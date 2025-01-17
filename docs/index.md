@@ -172,7 +172,7 @@ Impact Reporting would consume the problems and feed it into multiple internal i
 
 Back to: 
 [[top](#azure-impact-reporting---documentation)]
-[[section](#impact-reporting-connectors-for-dynatrace)]
+[[section](#impact-reporting-dynatrace-connector)]
 
 ### Onboarding Impact Reporting app and Upload to Dynatrace
 
@@ -232,7 +232,7 @@ Ensure you have Contributor permission to log in to Azure and register resource 
 
 Back to: 
 [[top](#azure-impact-reporting---documentation)]
-[[section](#impact-reporting-connectors-for-dynatrace)]
+[[section](#impact-reporting-dynatrace-connector)]
 
 
 ### Support/Questions/Comments: 
@@ -240,7 +240,7 @@ Please refer to the TSG or reach out to impactrp-preview@microsoft.com for any q
 
 Back to: 
 [[top](#azure-impact-reporting---documentation)]
-[[section](#impact-reporting-connectors-for-dynatrace)]
+[[section](#impact-reporting-dynatrace-connector)]
 
 ## Azure Impact Reporting Connectors for Azure Monitor FAQ
 
