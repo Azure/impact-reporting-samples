@@ -3,7 +3,7 @@
 ### [Overview](#what-is-azure-impact-reporting)
 [What is Azure Impact Reporting?](#what-is-azure-impact-reporting) <br>
 [Impact Reporting Connectors for Azure Monitor](#impact-reporting-connectors-for-azure-monitor) <br>
-[Impact Reporting Connectors for Dynatrace](#impact-reporting-connectors-for-dynatrace) <br>
+[Impact Reporting Connectors for Dynatrace](#impact-reporting-dynatrace-connector) <br>
 [Impact Reporting Connectors - FAQ](#azure-impact-reporting-connectors-for-azure-monitor-faq)
 
 ### [Tutorials](#register-for-private-preview)
@@ -162,7 +162,7 @@ This connector will allow Azure - Dynatrace customers to seemlessly send their p
 
 Back to: 
 [[top](#azure-impact-reporting---documentation)]
-[[section](#impact-reporting-connectors-for-dynatrace)]
+[[section](#impact-reporting-dynatrace-connector)]
 
 ### How it works
 This integration is based on an Impact Reporting app that will installed and uploaded in the Dynatrace hub. This would reside within the Azure tenant. On onboarding, the user will need to provide the list of subscriptions that they would want to report an impact against. To note, this a 1: N relation. Which means, a single app ID for multiple subscriptions.(details below on the onboarding script and installation). Once the customer successfully installs the app and onboards to our program, impacts would be sent to Impact Reporting using a secure pipeline. Impact Reporting would receive an impact whenever a problem is triggered by DavisAI. On the creation of the problem, Impact Reporting would fetch required details from GRAIL, which would assist in recieving the App ID, secret and token from the credential vault and EAD. This would then translate the problem ID as an Impact to Impact Reprting.
