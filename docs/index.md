@@ -154,9 +154,9 @@ Back to:
 [[section](#overview)]
 
 
-## Impact Reporting Connectors for Dynatrace
-Installing the ImpactRP app on the Dynatrace hub allows customers to easily send impacts to ImpactRP for investigations.
-This integration also enables customers to view insights received from ImpactRP.
+## Impact Reporting Dynatrace connector
+This connector will allow Azure - Dynatrace customers to seemlessly send their problem - alerts from their Dynatrace tenant to Impact Reporting. In return, Azure Impact Reporting will provide valuable insights directly back to Dynatrace, accessible through their hub. This reciprocal exchange will empower users with deeper insights and a streamlined problem resolution process. 
+
 
 ![image](assets/DTConnector.png)
 
@@ -165,16 +165,16 @@ Back to:
 [[section](#impact-reporting-connectors-for-dynatrace)]
 
 ### How it works
-This integration is based on an ImpactRP app that will installed and uploaded in the Dynatrace hub. This would reside within the Azure tenant. On onboarding, the user will need to provide the list of subscriptions that they would want to report an impact against. To note, this a 1: N relation. Which means, a single app ID for multiple subscriptions.(details below on the onboarding script and installation). Once the customer successfully installs the app and onboards to our program, impacts would be sent to ImpactRP using a secure pipeline. ImpactRP would receive an impact whenever a problem is triggered by DavisAI. On the creation of the problem, ImpactRP would fetch required details from GRAIL, which would assist in recieving the App ID, secret and token from the credential vault and EAD. This would then translate the problem ID as an Impact to ImpactRP.
+This integration is based on an Impact Reporting app that will installed and uploaded in the Dynatrace hub. This would reside within the Azure tenant. On onboarding, the user will need to provide the list of subscriptions that they would want to report an impact against. To note, this a 1: N relation. Which means, a single app ID for multiple subscriptions.(details below on the onboarding script and installation). Once the customer successfully installs the app and onboards to our program, impacts would be sent to Impact Reporting using a secure pipeline. Impact Reporting would receive an impact whenever a problem is triggered by DavisAI. On the creation of the problem, Impact Reporting would fetch required details from GRAIL, which would assist in recieving the App ID, secret and token from the credential vault and EAD. This would then translate the problem ID as an Impact to Impact Reprting.
 
-ImpactRP would consume the problems and feed it into multiple internal intelligent systems to correlate and provide insights back to the user. These insights will then be found on the users Dynatrace hub, by the 'Insights' tab. 
+Impact Reporting would consume the problems and feed it into multiple internal intelligent systems to correlate and provide insights back to the user. These insights will then be found on the users Dynatrace hub, by the 'Insights' tab. 
 
 
 Back to: 
 [[top](#azure-impact-reporting---documentation)]
 [[section](#impact-reporting-connectors-for-dynatrace)]
 
-### Onboarding ImpactRP app and Upload to Dynatrace
+### Onboarding Impact Reporting app and Upload to Dynatrace
 
 Onboarding is a 4 step process. 
 1) Upload the app to your Dynatrace Hub
@@ -184,13 +184,22 @@ Onboarding is a 4 step process.
 
 
 #### 1. To Upload your app to Dynatrace: 
-1) Please run and install the app artifact provided to you by ImpactRP.  
-2) To create an app artifact in your local development environment, use the following command: 
-npx dt-app deploy --dry-run (refer to the documentation: Command reference | Dynatrace Developer). Ensure that your app ID begins with my. (refer to the configuration: Configuration | Dynatrace Developer)
-3) The app artifact will be located in the /out/artifact.zip directory of your app workspace
-4) The customer should log in to their preferred Dynatrace environment, open the Hub app, 
+1) Please download the app binaries shared with you by Azure Impact Reporting team. 
+2) The customer should log in to their preferred Dynatrace environment, open the Hub app, 
 navigate to the Manage page, click the upload button, select the app artifact from the file picker, 
 and confirm the installation. To complete this step, the user must have the app-engine:apps:install permission.
+
+The app will require the following permissions from Dynatrace
+
+    storage:events:read - To read events
+    storage:events:read - To read events
+    storage:buckets:read - To read events
+    storage:entities:read - Allows to read entities
+    app-settings:objects:read - To read app settings
+    app-settings:objects:write - To write app settings
+    environment-api:credentials:read - To read credentials from the vault
+    environment-api:credentials:write - To write credentials to the vault
+    automation:workflows:read - To read workflows
 
 
 #### 2. Dynatrace Settings: 
@@ -203,27 +212,22 @@ To make calls to AAD and ARM:
         management.azure.com
 
 
-#### 3. ImpactRP Onboarding: 
-Execute the onboarding script (provided to you by ImpactRP), in your Azure enviornment.
+#### 3. Impact Reporting Onboarding: 
+Execute the onboarding script (provided to you by Impact Reporting), in your Azure enviornment.
 
-#### Pre-requistes to run the deployment script:
+#### Permissions Needed on Azure to run the deployment script:
 
-| Type     | Details      |
-| ------------- | ------------- |
-| **Contributor Permissions** | Needed at the subscription scope for executing steps related to: <li>Resource provider registration</li><li>Enable Connector preview feature</li><li>Create the Impact Connector resource</li> |
-| **User Access Administrator Permissions** | Needed at the subscription scope for executing steps related to: <li>Creating the custom role that enables the Connector to read alerts</li><li>Assigning the custom role to the Connector service</li> |
-| **Command line tools** | [Bash](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli) or [Powershell](https://learn.microsoft.com/en-us/powershell/azure/install-azure-powershell?view=azps-12.0.0) (*not needed if you are using CloudShell*)|
-| **Subscription Id**| A subscription ID, or a file containing a list of subscription IDs  whose alerts are of interest|
+Ensure you have Contributor permission to log in to Azure and register resource providers in the Azure subscriptions. You also need 'User Access Administrator or Role Based Access Administrator' permission to assign the 'Impact Reporter' and 'Monitoring Reader' role to the 'DynatraceImpactReportingConnectorApp' application.
 
 #### The deployment script does the following:
-    a) Registers the feature flag for Impact Reporting within the customers' Azure environment. 
-    b) Create a third-party app with a secure secret to ensure pipeline security.
+    a) Registers the resource provider Microsoft.Impact and associated feature flag for Impact Reporting within the customers' Azure subscription(s).
+    b) Optionally, creates a third-party Azure Entra App with a secure secret to ensure pipeline security. 
     c) Grant the app the 'ImpactReporter' permission on subscription(s).
 
 
 #### 4. Onboard and complete workflow in Dynatrace : 
 1) On completion of the above two steps. Return to the Dynatrace hub and open the Impact Reporting App that was uploaded in Step 1. 
-2) Please input the Azure Tenant ID, Azure Intra App ID, Azure Entra App Secret
+2) Please input the Azure Tenant ID, Azure Entra App ID, Azure Entra App Secret
 3) Click to go to the Next page and click "Create Workflow"
 
 Back to: 
