@@ -46,7 +46,7 @@ Verify your Azure role and permissions. You may need the help of your Azure admi
 
 ### How can I verify if the onboarding was completed successfully?
 
-1. Navigate to: https://ms.portal.azure.com/#@microsoft.onmicrosoft.com/resource/subscriptions/<subscription id>/users
+1. Navigate to: https://ms.portal.azure.com/#@microsoft.onmicrosoft.com/resource/subscriptions/[subscription_id]/users
 2. Click on the 'Role Assignments' tab
 3. Search for 'DynatraceImpactReportingConnectorApp' or for the custom app id provided while running the script.
 4. The app should have: 'Impact Reporter' and 'Monitoring Reader' role assigned to it
