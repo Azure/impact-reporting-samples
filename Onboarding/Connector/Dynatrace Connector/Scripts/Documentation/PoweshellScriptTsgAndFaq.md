@@ -31,8 +31,8 @@ To ensure the onboarding script works seamlessly, the following permissions are 
    2. Feature flag registration
 
 2. **Role Based Access Administrator/User Access Administrator Permissions**: At the subscription level, this role is needed for executing steps related to:
-   1. Assigning the 'Impact Reporter' role to the Azure service principal **'DynatraceImpactReportingConnectorApp'**
-   2. Assigning the 'Monitoring Reader' role to the Azure service principal **'DynatraceImpactReportingConnectorApp'**
+   1. Assigning the 'Impact Reporter' role to the Azure service principal **'DynatraceImpactReportingConnectorApp'** or to the custom app id provided while running the script.
+   2. Assigning the 'Monitoring Reader' role to the Azure service principal **'DynatraceImpactReportingConnectorApp'** or to the custom app id provided while running the script.
 
 In summary, a combination of these permissions will be sufficient to run the script effectively.
 
@@ -48,11 +48,15 @@ Verify your Azure role and permissions. You may need the help of your Azure admi
 
 1. Navigate to: https://ms.portal.azure.com/#@microsoft.onmicrosoft.com/resource/subscriptions/<subscription id>/users
 2. Click on the 'Role Assignments' tab
-3. Search for 'DynatraceImpactReportingConnectorApp'
+3. Search for 'DynatraceImpactReportingConnectorApp' or for the custom app id provided while running the script.
 4. The app should have: 'Impact Reporter' and 'Monitoring Reader' role assigned to it
 5. From the left blade, navigate to Settings -> Resource providers
 6. Search for 'Microsoft.Impact'
 7. It should be registered
+
+### Can I use multiple app-ids for various subscription?
+
+No, in this version of the onboarding, using multiple app IDs is not supported. While the script will run successfully with different app IDs for subsequent runs, the Dynatrace app 'Azure Impact Reporting (Preview)' does not support multiple apps to multiple subscription mappings. This means that impact reporting and insight fetching cannot occur for subscriptions that are not linked to the same app ID registered with the Dynatrace app during the onboarding process.
 
 ### TSG
 
@@ -68,10 +72,12 @@ Verify the file path provided with `-FilePath` exists and is accessible. Ensure 
 
 It is recommended not to use this option when executing the script for the first set of subscriptions. For subsequent subscription onboarding, ensure the app ID of the 'DynatraceImpactReportingConnectorApp' is passed as an input to the script.
 
+In case you have onboarded the first set of subscriptions with you own app-id using this option, kindly ensure that the subsequent subscription onboarding also happens with the same app id.
+
 ### Script fails to execute with permission errors
 
 Ensure you have **Contributor** permission to log in to Azure and register resource providers in the Azure subscriptions.
-You also need to have **'User Access Administrator or Role Based Access Administrator'** permission to assign the 'Impact Reporter' and 'Monitoring Reader' role to the 'DynatraceImpactReportingConnectorApp' application.
+You also need to have **'User Access Administrator or Role Based Access Administrator'** permission to assign the 'Impact Reporter' and 'Monitoring Reader' role to the 'DynatraceImpactReportingConnectorApp' application or to the custom app id provided while running the script.
 
 ### Script execution stops unexpectedly without completing
 
@@ -87,7 +93,7 @@ These operations can take several minutes (~20 minutes). Ensure your Azure accou
 
 ### Log line: 'Secret is not created as user did not provide consent.'
 
-This means that the script did not generate a secret for the 'DynatraceImpactReportingConnectorApp'. It is required that this app has a secret associated with it, as the secret value is necessary for performing the onboarding steps in Dynatrace. This app ID and secret combination is used to acquire the access token for reporting impacts and fetching insights.
+This means that the script did not generate a secret for the 'DynatraceImpactReportingConnectorApp' or to the custom app id provided while running the script. It is required that this app has a secret associated with it, as the secret value is necessary for performing the onboarding steps in Dynatrace. This app ID and secret combination is used to acquire the access token for reporting impacts and fetching insights.
 
 To create the secret, simply re-run the script and provide 'Y' as the input when asked for consent with the following prompt:
 
