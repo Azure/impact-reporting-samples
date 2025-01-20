@@ -79,7 +79,7 @@ Check if the Azure PowerShell module is installed and up to date. Use `Update-Mo
 
 ### Namespace or feature registration takes too long or fails
 
-These operations can take several minutes (~20 minutes). Ensure your Azure account has the **Contributor** access on the subscription(s). Re-run the script once the required access has been provided. If the issue persists on re-running create a github issue [here](https://github.com/Azure/impact-reporting-samples/issues/new?template=Blank+issue)
+These operations can take several minutes (~20 minutes). Ensure your Azure account has the **Contributor** access on the subscription(s). Re-run the script once the required access has been provided. If the issue persists on re-running create a Github issue [here](https://github.com/Azure/impact-reporting-samples/issues/new?template=Blank+issue)
 
 ### Role assignment fails
 
@@ -97,4 +97,4 @@ To create the secret, simply re-run the script and provide 'Y' as the input when
 
 If you do not wish to generate the secret via the script please follow the instructions at [this link](https://learn.microsoft.com/en-us/entra/identity-platform/quickstart-register-app?tabs=client-secret#add-credentials) to create a client secret manually for the application 'DynatraceImpactReportingConnectorApp'
 
-This TSG and FAQs aim to cover common scenarios encountered while running the `CreateImpactReportingConnector.ps1` script. For issues not covered here, create a github issue [here](https://github.com/Azure/impact-reporting-samples/issues/new?template=Blank+issue)
+This TSG and FAQs aim to cover common scenarios encountered while running the `CreateImpactReportingConnector.ps1` script. For issues not covered here, create a Github issue [here](https://github.com/Azure/impact-reporting-samples/issues/new?template=Blank+issue)

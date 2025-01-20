@@ -139,4 +139,4 @@ It can take about 15-20 minutes for the namespace registration to allow the conn
 
 3. Ensure that you have **Contributor** access to the subscription(s)
 
-This covers the common scenarios encountered while running the `create-impact-reporting-connector.sh` script. For issues not covered here, create a github issue [here](https://github.com/Azure/impact-reporting-samples/issues/new?template=Blank+issue)
+This covers the common scenarios encountered while running the `create-impact-reporting-connector.sh` script. For issues not covered here, create a Github issue [here](https://github.com/Azure/impact-reporting-samples/issues/new?template=Blank+issue)
