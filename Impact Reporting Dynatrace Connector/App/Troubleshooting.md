@@ -59,7 +59,7 @@ Ensure that the entered app id is correct and present under app registrations of
 
 ### Error: Blocked Request (Host not in allowlist)
 1. Dyntrace blocks all external calls by default.
-2. To allow authentication and impact reporting, the follow URLs have to be allow-listed.
+2. To allow authentication and impact reporting, the following URLs have to be allow-listed.
     - login.microsoftonline.com
     - management.azure.com
 3. Search "Limit outbound connections" on dynatrace. Add the above URLs to the list of allowed hosts.
