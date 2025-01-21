@@ -214,7 +214,6 @@ To make calls to AAD and ARM:
         login.microsoftonline.com
         management.azure.com
 
-
 #### 3. Impact Reporting Onboarding: 
 Execute the onboarding script (provided to you by Impact Reporting), in your Azure environment.
 
@@ -232,6 +231,18 @@ Ensure you have Contributor permission in subscription(s) that you choose to onb
 1) On completion of the above two steps. Return to the Dynatrace hub and open the Impact Reporting App that was uploaded in Step 1. 
 2) Please input the Azure Tenant ID, Azure Entra App ID, Azure Entra App Secret.
 3) Click to go to the Next page and click "Create Workflow".
+
+Note: Once onboarded, this app creates some entries in app settings that are essential for a smooth execution. Customers are recommended to refrain from making changes to these app settings. Editing these app settings can hamper with app execution leading to unexpected results.
+
+Note: It has been observed in some cases that, workflow execution fails with an error `InsufficientPermission: NOT_AUTHORIZED_FOR_TABLE`. If this error is seen, make the following changes to your settings in workflows app:
+
+    a) In the Workflows app, at the top right corner, find Settings.
+    b) Click on Settings and then Authorization Settings.
+    c) Under Secondary permissions, select permissions for 'environment-api'
+    d) Save changes and re-run the failed execution(s)
+    
+
+
 
 Back to: 
 [[top](#azure-impact-reporting---documentation)]
