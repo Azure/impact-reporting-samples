@@ -64,6 +64,12 @@ Ensure that the entered app id is correct and present under app registrations of
     - management.azure.com
 3. Search "Limit outbound connections" on dynatrace. Add the above URLs to the list of allowed hosts.
 
+### Error: InsufficientPermission: NOT_AUTHORIZED_FOR_TABLE
+1. In the Workflows app, at the top right corner, find Settings.
+2. Click on Settings and then Authorization Settings.
+3. Under Secondary permissions, select permissions for 'environment-api'.
+4. Save changes and re-run the failed execution(s)
+
 ### Insights Page: Request Timeout
 1. This means the external call to fetch insights took too long to return results.
 2. Use the Refresh button on top of the table to attempt fetching insights again.
