@@ -23,6 +23,6 @@ Ensure that the entered app id is correct and present under app registrations of
  
 ## Step 2: Workflow Creation
 ### Cannot create a new workflow
-1. This error occurs when the limit for total amount of workflows that can be created in a account is reached.
+1. This error occurs when the limit for total amount of workflows that can be created in an account is reached.
 2. Try deleting a workflow and then onboarding.
 3. Work with the dynatrace team to increase the limit for your account.
