@@ -6,11 +6,9 @@ Congratulations on choosing **Azure Impact Reporting app for Dynatrace**! This g
 
 In this guide, you’ll find:
 
-- **Prerequisites:** What you need to have before starting.
-- **Installation:** How to download and set up the app.
-- **Configuration:** Setting up your environment for optimal performance.
-- **Verification:** Testing your setup to ensure everything works.
-- **Next Steps:** Links to advanced features, documentation, and tips to get the most out of the app.
+- [**Prerequisites:**](#prerequisites) What you need to have before starting.
+- [**Azure Impact Reporting (Preview) app onboarding:**](#azure-impact-reporting-preview-app-onboarding-is-a-3-step-process) How to download and set up the app.
+- [**Support/Questions/Comments:**](#supportquestionscomments) Setting up your environment for optimal performance.
 
 ## Who Is This Guide For?
 
@@ -29,7 +27,7 @@ This guide is designed for:
 Before you begin, ensure you have:
 
 - [ ] A valid account with necessary access permissions to an Azure tenant and Dynatrace environment.
-- [ ] Access to the latest app binary from the [releases folder](../releases/).
+- [ ] Access to the latest app binary from the [releases](https://github.com/Azure/impact-reporting-dynatrace-connector-release/releases).
 - [ ] You must have the app-engine:apps:install permission in your Dynatrace environment.
 - [ ] Have [run the impact reporting script in Azure](#run-the-impact-reporting-onboarding-script-in-azure)
 
@@ -52,7 +50,8 @@ Ensure you have Contributor permission in subscription(s) that you choose to onb
 
    Shell script
 
-        ./azure-impact-reporting-onboarding.sh --subscription_id <subscription id> 
+        chmod 777 ./azure-impact-reporting-onboarding.sh
+        ./azure-impact-reporting-onboarding.sh --subscription-id <subscription id> 
 
     Powershell
 
@@ -62,6 +61,7 @@ Ensure you have Contributor permission in subscription(s) that you choose to onb
 
     Shell script
 
+        chmod 600 ./azure-impact-reporting-onboarding.sh
         ./azure-impact-reporting-onboarding.sh --file-path <file path to the file that has new line separated list of subscriptions to be onboarded>
 
     Powershell
@@ -88,7 +88,7 @@ To make calls to AAD and ARM:
 
 #### 2. To Upload and install your app in Dynatrace
 
-1) Please download the app binaries from the [releases folder](../releases/).
+1) Download the **artifact.zip** from the latest version present under [releases](https://github.com/Azure/impact-reporting-dynatrace-connector-release/releases))
 2) The customer should log in to their preferred Dynatrace environment
    1) Open the Hub app
    2) Navigate to the Manage tab

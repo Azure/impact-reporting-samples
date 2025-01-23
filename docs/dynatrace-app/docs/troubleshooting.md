@@ -42,7 +42,13 @@ Ensure that the entered app id is correct and present under app registrations of
 2. Try deleting a workflow and then onboarding.
 3. Work with the dynatrace team to increase the limit for your account.
 
-## Workflow Execution failure and Insights Page failure
+## Workflow Execution failures
+
+### Unable to find the workflow 'Azure Impact Reporter'
+
+1. Under the Home page of the Workflow app
+2. Click on the dropdown for 'Owner' and select 'Clear Selection'
+3. You should now see the 'Azure Impact Reporter' workflow
 
 ### Loading of action widget timed out
 
@@ -99,12 +105,27 @@ The app needs to be re-installed to restore the settings.
 3. Under Secondary permissions, select permissions for 'environment-api'.
 4. Save changes and re-run the failed execution(s)
 
-### Insights Page: Request Timeout
+### Impact reporting failed due to: HTTP error! Status: 401 and Status text: Unauthorized
+
+1. Ensure that the subscription that you are reporting against belongs to the same Azure tenant that the app onboarding was performed for.
+2. Search for the log line: 'Tenant Id is:' to get the Azure tenant id the onboarding happened for.
+
+#### Azure Tenant to subscription mapping is correct
+
+Onboard this subscription for Impact Reporting by performing the steps outlined [here](./onboarding.md/#run-the-impact-reporting-onboarding-script-in-azure)
+
+#### Azure Tenant to subscription mapping is incorrect
+
+Currently we only support impact reporting for a single Azure tenant from Dynatrace. The ability to support multiple tenants will come in future releases. Stay tuned!
+
+## Insights Page failures
+
+### Request Timeout
 
 1. This means the external call to fetch insights took too long to return results.
 2. Use the Refresh button on top of the table to attempt fetching insights again.
 
-### Insights Page: Failed to fetch impacts insights
+### Failed to fetch impacts insights
 
 1. Use the Refresh button on top of the table to attempt fetching insights again.
 2. If the issue persists, check the console logs to get a detailed error message. (Press F2 and then Click on Console)
