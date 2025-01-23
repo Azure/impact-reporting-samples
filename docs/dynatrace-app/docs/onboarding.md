@@ -61,7 +61,7 @@ Ensure you have Contributor permission in subscription(s) that you choose to onb
 
     Shell script
 
-        chmod 600 ./azure-impact-reporting-onboarding.sh
+        chmod 777 ./azure-impact-reporting-onboarding.sh
         ./azure-impact-reporting-onboarding.sh --file-path <file path to the file that has new line separated list of subscriptions to be onboarded>
 
     Powershell
