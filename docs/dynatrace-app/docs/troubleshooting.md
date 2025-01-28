@@ -61,7 +61,7 @@ The app needs to be re-installed to restore the settings.
 
 1. From the Dynatrace home, open the 'Hub' app
 2. Navigate to the 'Manage' tab
-3. Search for the app 'Azure Impact Reporting (Preview)' app
+3. Search for the app 'Azure Impact Reporting (PREVIEW)' app
 4. Click on the three dots on the right hand side
 5. Select 'Delete'
 6. Follow the steps defined [here](./onboarding.md/#azure-impact-reporting-preview-app-onboarding-is-a-3-step-process) to re-install and onboard the app.

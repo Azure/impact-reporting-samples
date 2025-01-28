@@ -7,7 +7,7 @@ Congratulations on choosing **Azure Impact Reporting app for Dynatrace**! This g
 In this guide, you’ll find:
 
 - [**Prerequisites:**](#prerequisites) What you need to have before starting.
-- [**Azure Impact Reporting (Preview) app onboarding:**](#azure-impact-reporting-preview-app-onboarding-is-a-3-step-process) How to download and set up the app.
+- [**Azure Impact Reporting (PREVIEW – CONFIDENTIAL) app onboarding:**](#azure-impact-reporting-preview-app-onboarding-is-a-3-step-process) How to download and set up the app.
 - [**Support/Questions/Comments:**](#supportquestionscomments) Setting up your environment for optimal performance.
 
 ## Who Is This Guide For?
@@ -20,7 +20,7 @@ This guide is designed for:
 
 ---
 
-## Onboarding Azure Impact Reporting (Preview) app
+## Onboarding Azure Impact Reporting (PREVIEW – CONFIDENTIAL) app
 
 ### Prerequisites
 
@@ -69,11 +69,11 @@ Ensure you have Contributor permission in subscription(s) that you choose to onb
         ./AzureImpactReportingOnboarding.ps1 -FilePath <file path to the file that has new line separated list of subscriptions to be onboarded>
 4) Note the output of the script as it will be required in upcoming steps.
 
-### Azure Impact Reporting (Preview) app onboarding is a 3 step process
+### Azure Impact Reporting (PREVIEW – CONFIDENTIAL) app onboarding is a 3 step process
 
 1) [Update Dynatrace Settings](#1-update-dynatrace-settings)
 2) [Upload and install the app in your Dynatrace environment](#2-to-upload-and-install-your-app-in-dynatrace)
-3) [Onboard the Azure Impact Reporting (Preview) app](#3-onboard-the-azure-impact-reporting-preview-app)
+3) [Onboard the Azure Impact Reporting (PREVIEW – CONFIDENTIAL) app](#3-onboard-the-azure-impact-reporting-preview-app)
 
 #### 1. Update Dynatrace Settings
 
@@ -107,9 +107,9 @@ The app will require the following permissions from Dynatrace
 
 As this app creates a workflow that triggers on a problem and does query execution using DQL to fetch additional details associated with a problem, there is a small cost incurred. Please review costing details here: [Rate Card](https://www.dynatrace.com/pricing/rate-card/)
 
-#### 3. Onboard the Azure Impact Reporting (Preview) app
+#### 3. Onboard the Azure Impact Reporting (PREVIEW – CONFIDENTIAL) app
 
-1) Open the Azure Impact Reporting (Preview) App
+1) Open the Azure Impact Reporting (PREVIEW) App
 2) Click on the 'Get Started' button once you have completed the pre-requisite of [Run the Impact Reporting Onboarding script in Azure](#run-the-impact-reporting-onboarding-script-in-azure)
 3) Input the Azure Tenant ID, Azure Entra App ID, Azure Entra App Secret that was obtained as the output of [running the Impact Reporting onboarding script in Azure](#run-the-impact-reporting-onboarding-script-in-azure)
 

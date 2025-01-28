@@ -1,8 +1,8 @@
 # Welcome to the Azure Impact Reporting app for Dynatrace Documentation
 
-Welcome to the official documentation for Azure Impact Reporting app for Dynatrace! This guide will help you get started, answer common questions, and troubleshoot any issues. Whether you're a new user or an experienced customer, you'll find everything you need here.
+Welcome to the official documentation for Azure Impact Reporting app for Dynatrace (PREVIEW – CONFIDENTIAL)! This guide will help you get started, answer common questions, and troubleshoot any issues. Whether you're a new user or an experienced customer, you'll find everything you need here.
 
-## Azure Impact Reporting App for Dynatrace
+## Azure Impact Reporting App for Dynatrace (PREVIEW – CONFIDENTIAL)
 This app will allow Azure - Dynatrace customers to seemlessly send their problem - alerts from their Dynatrace tenant to Impact Reporting. In return, Azure Impact Reporting will provide valuable insights directly back to Dynatrace, accessible through their hub. This reciprocal exchange will empower users with deeper insights and a streamlined problem resolution process. 
 
 
@@ -14,7 +14,15 @@ This integration is based on the Impact Reporting app that will be uploaded and 
 
 Impact Reporting would consume these impacts reported by the app and feed it into multiple internal intelligent systems to correlate and provide insights back to the user. These insights will then be found on the users Dynatrace environment, by the home page of the app. 
 
+### PREVIEW and CONFIDENTIAL
+
 Important: This feature is in Private Preview. Visit here to review terms: https://azure.microsoft.com/en-us/support/legal/preview-supplemental-terms/
+
+#### PRIVATE PREVIEW NOTICE
+
+Preview Terms: The "Azure Impact Reporting" (the "Preview") is subject to the [Supplemental Terms of Use for Microsoft Azure Previews](https://azure.microsoft.com/en-us/support/legal/preview-supplemental-terms/). Unless otherwise noted, Customer should not use the Preview to process Personal Data or other data that is subject to legal or regulatory compliance requirements. 
+
+Confidentiality: The Preview and any associated materials or documentation are confidential information and subject to obligations in your Non-Disclosure Agreement with Microsoft.
 
 ## Table of Contents
 
