@@ -7,7 +7,7 @@ Congratulations on choosing **Azure Impact Reporting app for Dynatrace**! This g
 In this guide, you’ll find:
 
 - [**Prerequisites:**](#prerequisites) What you need to have before starting.
-- [**Azure Impact Reporting (PREVIEW – CONFIDENTIAL) app onboarding:**](#azure-impact-reporting-preview-app-onboarding-is-a-3-step-process) How to download and set up the app.
+- [**Azure Impact Reporting (PREVIEW – CONFIDENTIAL) app onboarding:**](#azure-impact-reporting-preview--confidential-app-onboarding-is-a-3-step-process) How to download and set up the app.
 - [**Support/Questions/Comments:**](#supportquestionscomments) Setting up your environment for optimal performance.
 
 ## Who Is This Guide For?
@@ -73,7 +73,7 @@ Ensure you have Contributor permission in subscription(s) that you choose to onb
 
 1) [Update Dynatrace Settings](#1-update-dynatrace-settings)
 2) [Upload and install the app in your Dynatrace environment](#2-to-upload-and-install-your-app-in-dynatrace)
-3) [Onboard the Azure Impact Reporting (PREVIEW – CONFIDENTIAL) app](#3-onboard-the-azure-impact-reporting-preview-app)
+3) [Onboard the Azure Impact Reporting (PREVIEW – CONFIDENTIAL) app](#3-onboard-the-azure-impact-reporting-preview--confidential-app)
 
 #### 1. Update Dynatrace Settings
 
@@ -126,7 +126,7 @@ As this app creates a workflow that triggers on a problem and does query executi
     a) In the Workflows app, at the top right corner, find Settings. </br>
     b) Click on Settings and then Authorization Settings.</br>
     c) Under Primary permissions, select all permissions. </br>
-    c) Under Secondary permissions, select permissions for 'environment-api' </br>
+    c) Under Secondary permissions, select permissions for 'environment-api' and 'storage:entities:read' </br>
     d) Save changes and re-run the failed execution(s) </br>
 
 ### Support/Questions/Comments
