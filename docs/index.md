@@ -1,21 +1,28 @@
 # Azure Impact Reporting - Documentation
 
 ### [Overview](#what-is-azure-impact-reporting)
-[What is Azure Impact Reporting?](#what-is-azure-impact-reporting) <br>
-[Impact Reporting Connectors for Azure Monitor](#impact-reporting-connectors-for-azure-monitor) <br>
-[Impact Reporting Connectors for Dynatrace](#impact-reporting-dynatrace-connector) <br>
+
+[What is Azure Impact Reporting?](#what-is-azure-impact-reporting)
+
+[Impact Reporting Connectors for Azure Monitor](#impact-reporting-connectors-for-azure-monitor)
+
 [Impact Reporting Connectors - FAQ](#azure-impact-reporting-connectors-for-azure-monitor-faq)
 
 ### [Tutorials](#register-for-private-preview)
-[Register for Private Preview](#register-for-private-preview) <br>
-[Report Impact on an Azure Virtual Machine](#report-impact-on-an-azure-virtual-machine) <br>
-[Onboard to Azure Impact Reporting](#onboard-to-azure-impact-reporting) <!-- Might not be needed  --><br>
-[Report Using a Logic App](#report-using-a-logic-app) <br>
+
+[Register for Private Preview](#register-for-private-preview)
+
+[Report Impact on an Azure Virtual Machine](#report-impact-on-an-azure-virtual-machine)
+
+[Onboard to Azure Impact Reporting](#onboard-to-azure-impact-reporting) 
+
+[Report Using a Logic App](#report-using-a-logic-app)
+
 [View Allowed Impact Categories](#view-allowed-impact-categories)
 
-### [Troubleshoot]()
-[Impact Reporting Connectors TSG](#impact-reporting-connectors-tsg)
+### [Troubleshoot](#troubleshoot)
 
+[Impact Reporting Connectors TSG](#impact-reporting-connectors-tsg)
 
 ## What is Azure Impact Reporting
 
@@ -31,11 +38,12 @@ Examples of impacts include:
 * Connectivity Impact: You're not able to successfully write to blob store despite having the right permissions
 * Availability: Your Azure virtual machine unexpectedly reboots
 
-
-Back to: 
+Back to:
 [[top](#azure-impact-reporting---documentation)]
 [[section](#overview)]
+
 ## Impact Reporting Connectors for Azure Monitor
+
 The impact Connector for Azure Monitor alerts enables you to seamlessly report impact from an alert into Microsoft AIOps for change event correlation.
 
 ### How Connectors work
@@ -60,28 +68,35 @@ Below are steps needed to create an impact Connector for Azure Monitor Alerts
 #### Create a Connector - Command Line
 
 The deployment scripts does the following:
+
 * Registers your subscription(s) for Azure Impact Reporting private preview (pre-requisite for using Connectors)
 * Creates a connector resource (`microsoft.impact/connector`)
 * This connector will report an impact whenever an alert from those subscriptions fires
 
 ##### 1. **Get the script**
+
 Go to the [Impact Reporting samples](https://github.com/Azure/impact-reporting-samples/tree/main/Onboarding/Connector/Scripts) githup repo and choose your script and choose either the bash or powershell script
+
 ##### 2. **Execute in your environment**
+
 You will need to execute this script in your Azure environment.
 
 ###### **Powershell**
+
 * Single Subscription: `./CreateImpactReportingConnector.ps1 -SubscriptionId <subid>`
 * Multiple subscriptions from file: `./CreateImpactReportingConnector.ps1 -FilePath './subscription_ids'`
 
 ###### **Bash**
+
 * Single Subscription: `./create-impact-reporting-connector.sh --subscription-id <subid>`
 * Multiple subscriptions from file: `./create-impact-reporting-connector.sh --file_path './subscription_ids'
 
-Back to: 
+Back to:
 [[top](#azure-impact-reporting---documentation)]
 [[section](#overview)]
 
 #### Create a Connector - Azure Portal
+
 Follow the steps below to create a Connector from the Azure Portal.
 
 1. Search for **Impact Reporting Connectors** in Azure portal search
@@ -98,14 +113,14 @@ Follow the steps below to create a Connector from the Azure Portal.
 
 7. The deployment can take several minutes to complete, as there are feature flags that need registration which can take some time to propagate. Meanwhile, head to the next section to enable alert reading from your subscription
 
-Back to: 
+Back to:
 [[top](#azure-impact-reporting---documentation)]
 [[section](#troubleshoot)]
 
 #### Assigning Azure-Alerts-Reader-Role to the Connector
 
 1. Navigate to your subscription, and select **Access Control (IAM)** from the navigation blade
-2. Click **Add** and then click **Add role assignment**. This will open the **Add role assignment** page. 
+2. Click **Add** and then click **Add role assignment**. This will open the **Add role assignment** page.
 3. Under the **Role** tab, in the search bar, type *Azure-Alerts-Reader-Role*. If this role does not exist, head to [Creating the Azure-Alerts-Reader-Role](#creating-the-azure-alerts-reader-role) to create this role. Once the role is created, return back to this step.
 
     ![Add custom role](assets/Role%20Selection.png)
@@ -120,11 +135,12 @@ Back to:
 8. Select the **Review + assign** button at the bottom of the page
 9. In the **Review + assign** tab, click on **Review + assign** button at the bottom of the page
 
-Back to: 
+Back to:
 [[top](#azure-impact-reporting---documentation)]
 [[section](#overview)]
 
 #### Creating the Azure-Alerts-Reader-Role
+
 1. Navigate to your subscription, and select **Access Control (IAM)** from the navigation blade
 2. Click **Add** and then click **Add custom role**. This will open the **Create a custom role** page
 
@@ -149,113 +165,21 @@ Back to:
 7. Select the **Review + create** button at the bottom of the page
 8. In the **Review + create** tab, click on **Create** button at the bottom of the page
 
-Back to: 
+Back to:
 [[top](#azure-impact-reporting---documentation)]
 [[section](#overview)]
 
+### Support/Questions/Comments
 
-## Impact Reporting Dynatrace connector
-This connector will allow Azure - Dynatrace customers to seemlessly send their problem - alerts from their Dynatrace tenant to Impact Reporting. In return, Azure Impact Reporting will provide valuable insights directly back to Dynatrace, accessible through their hub. This reciprocal exchange will empower users with deeper insights and a streamlined problem resolution process. 
+Please refer to the TSG or reach out to impactrp-preview@microsoft.com for any questions or feedback.
 
-
-![image](assets/DTConnector.png)
-
-Back to: 
+Back to:
 [[top](#azure-impact-reporting---documentation)]
-[[section](#impact-reporting-dynatrace-connector)]
-
-### How it works
-This integration is based on the Impact Reporting app that will be uploaded and installed in customer's Dynatrace environment. On onboarding, the user will need to provide the list of Azure subscriptions that they would want to report an impact against, on behalf of their Azure Entra App. To note, this a 1: N relation, which means, a single app ID can be used for multiple subscriptions.(details below on the onboarding script and installation). Once the customer successfully installs the app and onboards to our program, impacts would be sent to Impact Reporting using a secure pipeline. Impact Reporting would receive an impact whenever a problem is triggered by DavisAI in Dynatrace. On the creation of the problem, Impact Reporting App would fetch required details from GRAIL, translate the problem into an impact and report it to Impact Reporting by making an authenticated REST call to ARM using a token generated by app details provided by customers during onboarding.
-
-Impact Reporting would consume these impacts reported by the app and feed it into multiple internal intelligent systems to correlate and provide insights back to the user. These insights will then be found on the users Dynatrace environment, by the home page of the app. 
-
-Important: This feature is in Private Preview. Visit here to review terms: https://azure.microsoft.com/en-us/support/legal/preview-supplemental-terms/
-
-
-Back to: 
-[[top](#azure-impact-reporting---documentation)]
-[[section](#impact-reporting-dynatrace-connector)]
-
-### Onboarding Impact Reporting app and Upload to Dynatrace
-
-Onboarding is a 4 step process. 
-1) Upload and install the app in your Dynatrace environment.
-2) Dynatrace Settings 
-2) Run the Impact Reporting Onboarding Script 
-3) Onboard to Dynatrace by completing worklow
-
-
-#### 1. To Upload and install your app in Dynatrace: 
-1) Please download the app binaries shared with you by Azure Impact Reporting team. 
-2) The customer should log in to their preferred Dynatrace environment, open the Hub app, 
-navigate to the Manage page, click the upload button, select the app artifact from the file picker, 
-and confirm the installation. To complete this step, the user must have the app-engine:apps:install permission.
-
-The app will require the following permissions from Dynatrace
-
-    app-settings:objects:read - To read app settings that holds the tenant and credential information required to report impacts and fetch insights.
-    app-settings:objects:write: To write to app settings values for tenant and credential information required to report impacts and fetch insights.
-    environment-api:credentials:read: To read credential value that is used to get the access token for accessing the Microsoft APIs for reporting impacts and fetching insights.
-    environment-api:credentials:write: To write to credential vault the credentials that are used to get an access token for accessing the Microsoft APIs for reporting impacts and fetching insights.
-    automation:workflows:read: Read the created workflow that is used to report impacts.
-    storage:entities:read: Read azure resource related information to report impact against.
-
-As this app creates a workflow that triggers on a problem and does query execution using DQL to fetch additional details associated with a problem, there is a small cost incurred. Please review costing details here: [Rate Card](https://www.dynatrace.com/pricing/rate-card/)
-
-#### 2. Dynatrace Settings: 
-To make calls to AAD and ARM:    
-
-    a) Go to Dynatrace Home --> Click Search on the left Panel  
-    b) Search for 'Limit outbound connections' 
-    c) Add the following to the list: 
-        login.microsoftonline.com
-        management.azure.com
-
-#### 3. Impact Reporting Onboarding: 
-Execute the onboarding script (provided to you by Impact Reporting), in your Azure environment.
-
-#### Permissions Needed on Azure to run the deployment script:
-
-Ensure you have Contributor permission in subscription(s) that you choose to onboard for Impact Reporting. You also need 'User Access Administrator or Role Based Access Administrator' permission to assign the 'Impact Reporter' and 'Monitoring Reader' role to the Entra App that will be used to report impacts from these subscriptions.
-
-#### The deployment script does the following:
-    a) Registers the resource provider Microsoft.Impact and associated feature flag for Impact Reporting within the customers' Azure subscription(s).
-    b) Optionally, creates a third-party Azure Entra App with a secure secret to ensure pipeline security. 
-    c) Grant the app the 'ImpactReporter' and 'Monitorig Reader' permissions on subscription(s).
-
-
-#### 4. Onboard and complete workflow in Dynatrace : 
-1) On completion of the above two steps. Return to the Dynatrace hub and open the Impact Reporting App that was uploaded in Step 1. 
-2) Please input the Azure Tenant ID, Azure Entra App ID, Azure Entra App Secret.
-3) Click to go to the Next page and click "Create Workflow".
-
-Note: Once onboarded, this app creates some entries in app settings that are essential for a smooth execution. Customers are recommended to refrain from making changes to these app settings. Editing these app settings can hamper with app execution leading to unexpected results.
-
-Note: It has been observed in some cases that, workflow execution fails with an error `InsufficientPermission: NOT_AUTHORIZED_FOR_TABLE`. If this error is seen, make the following changes to your settings in workflows app:
-
-    a) In the Workflows app, at the top right corner, find Settings.
-    b) Click on Settings and then Authorization Settings.
-    c) Under Secondary permissions, select permissions for 'environment-api'
-    d) Save changes and re-run the failed execution(s)
-    
-
-
-
-Back to: 
-[[top](#azure-impact-reporting---documentation)]
-[[section](#impact-reporting-dynatrace-connector)]
-
-
-### Support/Questions/Comments: 
-Please refer to the TSG or reach out to impactrp-preview@microsoft.com for any questions or feedback. 
-
-Back to: 
-[[top](#azure-impact-reporting---documentation)]
-[[section](#impact-reporting-dynatrace-connector)]
 
 ## Azure Impact Reporting Connectors for Azure Monitor FAQ
 
 ### How do I enable debug mode?
+
 * **Bash**: Uncomment the `set -x` at the beginning of the script to enable debug mode.
 * **Powershell**: Change `Set-PSDebug -Trace 0 to Set-PSDebug -Trace 1` at the beginning of the script to enable debug mode
 
@@ -264,30 +188,43 @@ Back to:
 Verify your Azure role and permissions. You may need the help of your Azure administrator to grant you the necessary permissions or roles as defined in the permissions section.
 
 ### How can I verify if the connector is successfully created?
+
 #### Option 1
+
 * **Bash**:
-    * Step 1: Run the below command: 
+
+  * Step 1: Run the below command: 
 `az rest --method get --url https://management.azure.com/subscriptions/<subscription-id>/providers/Microsoft.Impact/connectors?api-version=2024-05-01-preview`
-    * Step 2: You should see a resource with the name `AzureMonitorConnector`
+
+  * Step 2: You should see a resource with the name `AzureMonitorConnector`
+
 * **Powershell**:
-    * Step 1: Run the below command: 
+
+  * Step 1: Run the below command: 
 `(Invoke-AzRestMethod -Method Get -Path subscriptions/<Subscription Id>/providers/Microsoft.Impact/connectors?api-version=2024-05-01-preview).Content`
-`* Step 2: You should see a resource with the name `AzureMonitorConnector`
+
+  * Step 2: You should see a resource with the name `AzureMonitorConnector`
 
 #### Option 2
+
 * Step 1: From the Azure Portal, navigate to [Azure Resource Graph Explorer](https://portal.azure.com/#view/HubsExtension/ArgQueryBlade)
-* Step 2: Run the below query: 
+
+* Step 2: Run the below query:
+
 ```kql
 impactreportresources  | where name == "AzureMonitorConnector"  and type == "microsoft.impact/connectors"
 ```
+
 * Step 3: The results should look like below, with a row for the connector resource
 
     ![image](assets/arg.png)
 
-Back to: 
+Back to:
 [[top](#azure-impact-reporting---documentation)]
 [[section](#overview)]
+
 ## Register for Private Preview
+
 Follow the steps below to register your subscription for Impact Reporting.
 
 1. Navigate to your subscription
@@ -299,8 +236,9 @@ Follow the steps below to register your subscription for Impact Reporting.
 
 Once your request is approved, you will have the ability to report Impact to your Azure workloads.
 
-[Report an Impact on a virtual machine](#report-impact-on-an-azure-virtual-machine) <br>
-[Use a logic app as REST client for Impact Reporting ](#report-using-a-logic-app)
+[Report an Impact on a virtual machine](#report-impact-on-an-azure-virtual-machine)
+
+[Use a logic app as REST client for Impact Reporting](#report-using-a-logic-app)
 
 ### Register your Subscription for Impact Reporting Feature - Script
 
@@ -397,8 +335,7 @@ do
 done
 ```
 
-
-Back to: 
+Back to:
 [[top](#azure-impact-reporting---documentation)]
 [[section](#overview)]
 
@@ -435,18 +372,19 @@ az rest --method PUT --url "https://management.azure.com/subscriptions/<Subscrip
 
 <!-- ## Reporting Impact via Azure CLI -->
 
-
-
-Back to: 
+Back to:
 [[top](#azure-impact-reporting---documentation)]
 [[section](#tutorials)]
+
 ## Onboard to Azure Impact Reporting
+
 > [!NOTE]
 > Please visit the [API Docs](https://aka.ms/ImpactRP/APIDocs) to learn more about available impact management actions.
 
 ![image](assets/impact-rp-end-to-end.png)
 
 ### Register your Subscription for Impact Reporting Feature
+
 > [!NOTE]
 > Please contact us at `impactrp-preview@microsoft.com` for any questions.
 
@@ -607,7 +545,8 @@ PUT https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000
   }
 }
 ```
-Back to: 
+
+Back to:
 [[top](#azure-impact-reporting---documentation)]
 [[section](#tutorials)]
 
@@ -624,11 +563,11 @@ Please first see [Onboarding](#register-for-private-preview) for steps on enabli
 \
 A managed identity with PUT access to the ImpactRP API and read access to the data source for the workload is required. Additionally, a query with a 1 minute or greater polling interval for the data source to generate the following fields is needed:
 
-- ImpactName
-- ImpactStartTime
-- ImpactedResourceId
-- WorkloadContext
-- ImpactCategory
+* ImpactName
+* ImpactStartTime
+* ImpactedResourceId
+* WorkloadContext
+* ImpactCategory
 
 This guide will use a Kusto cluster as an example data source with the following query:
 
@@ -637,15 +576,16 @@ ExampleTable
 | where Status =~ "BAD" and ingestion_time() > ago(1m)
 | distinct  ImpactStartTime=TimeStamp, ImpactedResourceId=ResourceId, WorkloadContext=Feature, ImpactCategory="Resource.Availability", ImpactName = hash_sha1(strcat(TimeStamp, ResourceId , Feature, Computer, ingestion_time()))
 ```
+
 > [!NOTE]
 > Please replace the above query with a query to a datastore or source that is supported by Logic Apps that returns the same columns. If all of these columns are not readily available, additional steps must be added to the workflow to generate the missing fields.
 
 ### Steps
 
 1. Create a new Logic Apps in Azure Portal with the following settings:
-    - Publish: Workflow
-    - Region: Central US
-    - Plan: Standard
+    * Publish: Workflow
+    * Region: Central US
+    * Plan: Standard
 
 2. (Optional) Under the "Monitoring" section, set "Enable Application Insights" to "Yes". This will allow for failure monitoring. Additional steps will be at the bottom of this document.
 
@@ -777,15 +717,16 @@ ExampleTable
 
 9. Click on the "HTTP" block and update the "Authentication" to the managed identity created in the prerequisites. Click "Save" to save the changes.
 
-10. Navigate to "Overview" and click "Run" to test the flow. Results will be displated under "Run History".
+10. Navigate to "Overview" and click "Run" to test the flow. Results will be displayed under "Run History".
 
 11. (Optional) Return to the Logic App screen in Azure Portal. Navigate to "Settings" -> "Application Insights" and click on the hyperlink to the Application Insights resource. Navigate to "Monitoring" -> "Alerts". Click "Create" -> "Alert Rule". From here, you can create an alert rule to notify on failures.
 
-
-Back to: 
+Back to:
 [[top](#azure-impact-reporting---documentation)]
 [[section](#tutorials)]
+
 ## View Allowed Impact Categories
+
 > All Azure resource types are currently supported for impact reporting.
 
 Please review our full list of categories in our [REST API reference](https://aka.ms/ImpactRP/APIDocs).
@@ -819,65 +760,82 @@ Please review our full list of categories in our [REST API reference](https://ak
 |Resource.Availability.DNS|Use this to report DNS availability issues.|
 |Resource.Availability.Other|Use this to report issues that don’t fall into under other Resource.Availability sub-categories|
 
-
-Back to: 
+Back to:
 [[top](#azure-impact-reporting---documentation)]
 [[section](#tutorials)]
-## Impact Reporting Connectors TSG
+
+## Troubleshoot
+
+### Impact Reporting Connectors TSG
+
 #### The bash script fails immediately after starting
+
 Ensure that the script has execution permissions. Use the below command to make it executable.
 chmod `+x create-impact-reporting-connector.sh`
 
 #### In the bash script, azure login fails (az login command not working)
+
 Ensure [Azure CLI](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli) is installed and updated to the latest version. Try manually logging in using `az login` to check for any additional prompts or errors.
 
 #### Error "**Subscription ID or file path with list of subscription IDs required**"
-- **Bash**: Make sure you are providing either `--subscription-id` or `--file-path` argument when executing the script. Do not provide both. <br>
-- **Powershell**: Make sure to provide either the `-SubscriptionId` parameter or the  `-FilePath` parameter when invoking the script. Do not provide both.
+
+* **Bash**: Make sure you are providing either `--subscription-id` or `--file-path` argument when executing the script. Do not provide both.
+
+* **Powershell**: Make sure to provide either the `-SubscriptionId` parameter or the  `-FilePath` parameter when invoking the script. Do not provide both.
 
 #### Error "**Failed to find file: [file_path]**"
-- **Bash**: Verify the file path provided with `--file-path` exists and is accessible. Ensure the correct path is used. <br>
-- **Powershell**: Verify the file path provided with `-FilePath` exists and is accessible. Ensure the correct path is used and the file is not locked or in use by another process.
+
+* **Bash**: Verify the file path provided with `--file-path` exists and is accessible. Ensure the correct path is used.
+
+* **Powershell**: Verify the file path provided with `-FilePath` exists and is accessible. Ensure the correct path is used and the file is not locked or in use by another process.
 
 #### Script fails to execute with permission errors
+
 Ensure you have Contributor permission to log in to Azure, register resource providers, and create connectors in the Azure subscriptions. You also need to have `User Access Administrator` permission to create and assign custom roles.
 
 #### Script execution stops unexpectedly without completing
+
 Check if the Azure PowerShell module is installed and up to date. Use `Update-Module -Name Az` to update the Azure PowerShell module. Ensure `$ErrorActionPreference` is set to `Continue` temporarily to bypass non-critical errors.
 
 #### Namespace or feature registration takes too long or fails
+
 These operations can take several minutes. Ensure your Azure account has the Contributor access on the subscription(s). Re-run the script once the required access has been provided. If the issue persists on re-running reach out to the [Impact Reporting connectors team](mailto:impactrp-preview@microsoft.com).
 
 #### Custom role creation or assignment fails
-1.	Ensure the Azure Service Principal `AzureImpactReportingConnector` exists by typing it into the Azure resource search box as shown below, if not wait for a few minutes for it to get created. If it does not get created even after an hour, reach out to the [Impact Reporting connectors team](mailto:impactrp-preview@microsoft.com).
+
+1. Ensure the Azure Service Principal `AzureImpactReportingConnector` exists by typing it into the Azure resource search box as shown below, if not wait for a few minutes for it to get created. If it does not get created even after an hour, reach out to the [Impact Reporting connectors team](mailto:impactrp-preview@microsoft.com).
 
     ![image](assets/az_search.png)
-2.	Verify your account has `User Access Administrator` permission to create roles and assign them.
+
+2. Verify your account has `User Access Administrator` permission to create roles and assign them.
+
 #### Connector creation takes too long
-It may take 15-20 minutes for the namespace registration to allow the connector resource creation to take place. 
+
+It may take 15-20 minutes for the namespace registration to allow the connector resource creation to take place.
 If the script has not completed execution after 30 minutes, cancel the execution and re-run it. If this issue persists, reach out to the [Impact Reporting Connectors team](mailto:impactrp-preview@microsoft.com)
 
 #### Connector creation fails
 
 1. Ensure that the RPs: Microsoft.Impact is registered. You can do this in 2 ways -
-    - From the Azure Portal, navigate to your `Subscription -> Resource Providers`
+    * From the Azure Portal, navigate to your `Subscription -> Resource Providers`
 
         ![aimaget](assets/az_RpRegistration.png)
-    - **Bash**: run `az provider show -n "Microsoft.Impact" -o json --query "registrationState"`
+    * **Bash**: run `az provider show -n "Microsoft.Impact" -o json --query "registrationState"`
         ![image](assets/run_azCLI.png)
-    - **PowerShell**: run `Get-AzResourceProvider -ProviderNamespace Microsoft.Impact`
+    * **PowerShell**: run `Get-AzResourceProvider -ProviderNamespace Microsoft.Impact`
         ![image](assets/run_pwsh.png)
-2.	Ensure that the feature flags: AllowImpactReporting and `AzureImpactReportingConnector` are registered against the feature:` Microsoft.Impact` Run the below command
+2. Ensure that the feature flags: AllowImpactReporting and `AzureImpactReportingConnector` are registered against the feature:`Microsoft.Impact` Run the below command
 
-    - **Bash**
-        - `az feature list -o json --query "[?contains(name, 'Microsoft.Impact/AllowImpactReporting')].{Name:name,State:properties.state}"`
-        - `az feature list -o json --query "[?contains(name, 'Microsoft.Impact/AzureImpactReportingConnector')].{Name:name,State:properties.state}"` <br>
+    * **Bash**
+        * `az feature list -o json --query "[?contains(name, 'Microsoft.Impact/AllowImpactReporting')].{Name:name,State:properties.state}"`
+        * `az feature list -o json --query "[?contains(name, 'Microsoft.Impact/AzureImpactReportingConnector')].{Name:name,State:properties.state}"`
+
         ![image](assets/bashrun.png)
-    - **PowerShell**
-        - `Get-AzProviderFeature -ProviderNamespace "Microsoft.Impact" -FeatureName AzureImpactReportingConnector"`
-        - `Get-AzProviderFeature -ProviderNamespace "Microsoft.Impact" -FeatureName AllowImpactReporting`
+    * **PowerShell**
+        * `Get-AzProviderFeature -ProviderNamespace "Microsoft.Impact" -FeatureName AzureImpactReportingConnector"`
+        * `Get-AzProviderFeature -ProviderNamespace "Microsoft.Impact" -FeatureName AllowImpactReporting`
         ![image](assets/run_pwsh.png)
-3.	Ensure that you have Contributor access to the subscription(s)
+3. Ensure that you have Contributor access to the subscription(s)
 
 This covers the common scenarios encountered while onboarding the connector. For issues not covered here, reach out to the [Impact Reporting Connectors team](mailto:impactrp-preview@microsoft.com).
 
