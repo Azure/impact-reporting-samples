@@ -1,45 +1,45 @@
-# Report impacts using webhook based logic app
+Readme.md -->
+# Report Impacts Using a Webhook-Based Logic App
 
-Click on the button below to deploy the logic app in your azure subscription.
+Deploy the logic app to your Azure subscription by clicking the button below.
 
-[![Deploy](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fchand45%2FTestRepo2%2Fmain%2Ftemplate.json)
+[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fchand45%2FTestRepo2%2Fmain%2Ftemplate.json)
 
-## Prerequistes for arm template deployment
-Logic app needs the following input parameters:
+## Prerequisites for ARM Template Deployment
 
-1. Region: Azure region where the logic app is deployed. Region is automatically populated with the selected resource group's location. Select the region from drop down if you are creating a new resource group.
+The logic app requires the following input parameters:
 
-2. Logic App Name: Defaulted to ImpactReportingConnectorLite. You can also give it any name you want.
+1.  **Region:** The Azure region where the logic app will be deployed. This field is automatically populated with the location of the selected resource group. If you are creating a new resource group, select the desired region from the dropdown menu.
+2.  **Logic App Name:** The default name is ImpactReportingConnectorLite. You can customize this name as needed.
+3.  **Managed Identity Name:** The name of the User Assigned Managed Identity resource.
+4.  **Managed Identity Subscription ID:** The subscription ID where the managed identity is created.
+5.  **Managed Identity Resource Group:** The resource group where the managed identity is created.
 
-3. Managed Identity Name: Name of the User Assigned Managed Identity resource.
+## Logic App Functionality
 
-4. Managed Identity SubscriptionId: Subscription where the managed identity is created.
+-   This logic app functions as a REST client for reporting impacts.
+-   It serves as a wrapper for the Impact Reporting REST API, streamlining the process of reporting impacts by simplifying authentication.
+-   A User Assigned Managed Identity (UAMI) is used for secure authentication for reporting impacts.
+-   The logic app enables reporting impacts across all subscriptions to which the UAMI has access.
+-   The UAMI requires the Impact Reporter role to report impacts against a subscription.
 
-5. Managed Identity Resource Group: Resource Group where the managed identity is created.
+## Triggering the Logic App
 
-## What does the logic app do?
-- The logic app serves as a REST client for reporting impacts.
-- It acts as a wrapper on top of the REST api for reporting impacts, providing the ability to seamlessly report impacts by simplifying the authentication overhead.
-- A User Assigned Managed Identity (UAMI) is used to securely authenticate against Impact RP and report impacts.
-- Logic App provides the ability to report impacts against all the subscriptions that the UAMI has access to.
-- UAMI needs Impact Reporter role to report impacts against a subscription.
+### 1. Triggering from the Azure Portal
 
-## How do I trigger the logic app?
+-   Navigate to the logic app resource in the Azure portal.
+-   Select **Run** -> **Run with payload**.
+    ![alt text](../../../../docs/assets/LogicApp.png)
+-   A panel will appear on the right.
+-   Construct the impact payload in JSON format and click **Run** to report the impact.
+    ![alt text](../../../../docs/assets/TriggerLogicApp.png)
+-   Monitor the run history on the logic app's overview page.
 
-### 1. Trigger Logic App from portal
-- Head over to the logic app resource
-- Click on Run --> Run with payload
-![alt text](../../../../docs/assets/LogicApp.png)
-- A pop up opens on the right.
-- Construct the impact payload and click on run to report impact.
-![alt text](../../../../docs/assets/TriggerLogicApp.png)
-- Check the run history from logic app's overview page.
+### 2. Triggering from a REST Client
 
-### 2. Trigger Logic App from a REST client
-- You can also trigger logic app from a REST client of your choice!
-- Copy the workflow URL from logic app overview page.
-- Make a PUT call to this URL, with impact payload in the body.
-- Check the run history from logic app's overview page. 
+-   Alternatively, trigger the logic app from a REST client of your choice.
+-   Copy the workflow URL from the logic app overview page.
+-   Make a PUT request to this URL, including the impact payload in the request body (JSON format).
+-   Monitor the run history on the logic app's overview page.
 
-
-You can also find the full API reference for workload impacts here: [Workload Impacts API Reference](https://learn.microsoft.com/en-us/rest/api/impact/workload-impacts/create?view=rest-impact-2024-05-01-preview&tabs=HTTP)
+For comprehensive API details, refer to the Workload Impacts API Reference: [Workload Impacts API Reference](https://learn.microsoft.com/en-us/rest/api/impact/workload-impacts/create?view=rest-impact-2024-05-01-preview&tabs=HTTP)
