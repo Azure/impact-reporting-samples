@@ -12,7 +12,7 @@ The logic app requires the following input parameters:
 2.  **Logic App Name:** The default name is ImpactReportingConnectorLite. You can customize this name as needed.
 3.  **Managed Identity Name:** The name of the User Assigned Managed Identity resource.
 4.  **Managed Identity Subscription ID:** The subscriptionId GUID where the managed identity is created. Example: 9e403b32-19f1-4d64-972b-bb7e09090637
-5.  **Managed Identity Resource Group Name:** The resource group name where the managed identity is created.
+5.  **Managed Identity Resource Group:** The resource group name where the managed identity is created.
 
 ## Logic App Functionality
 

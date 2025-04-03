@@ -16,7 +16,7 @@
                 "description": "Subscription ID of the Managed Identity"
             }
         },
-        "Managed Identity ResourceGroup Name": {
+        "Managed Identity ResourceGroup": {
             "type": "String",
             "metadata": {
                 "description": "ResourceGroup of the Managed Identity"
