@@ -7,13 +7,8 @@
             "defaultValue": "ImpactReportingConnectorLite",
             "metadata": {
                 "description": "Name of the logic app to be deployed"
-            }
-        },
-        "Managed Identity Name": {
-            "type": "String",
-            "metadata": {
-                "description": "Name of the Managed Identity"
-            }
+            },
+            "minLength": 1
         },
         "Managed Identity SubscriptionID": {
             "type": "String",
@@ -25,6 +20,12 @@
             "type": "String",
             "metadata": {
                 "description": "ResourceGroup of the Managed Identity"
+            }
+        },
+        "Managed Identity Name": {
+            "type": "String",
+            "metadata": {
+                "description": "Name of the Managed Identity"
             }
         }
     },
