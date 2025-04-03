@@ -11,8 +11,8 @@ The logic app requires the following input parameters:
 1.  **Region:** The Azure region where the logic app will be deployed. This field is automatically populated with the location of the selected resource group. If you are creating a new resource group, select the desired region from the dropdown menu.
 2.  **Logic App Name:** The default name is ImpactReportingConnectorLite. You can customize this name as needed.
 3.  **Managed Identity Name:** The name of the User Assigned Managed Identity resource.
-4.  **Managed Identity Subscription ID:** The subscription ID where the managed identity is created.
-5.  **Managed Identity Resource Group:** The resource group where the managed identity is created.
+4.  **Managed Identity Subscription ID:** The subscriptionId GUID where the managed identity is created. Example: 9e403b32-19f1-4d64-972b-bb7e09090637
+5.  **Managed Identity Resource Group Name:** The resource group name where the managed identity is created.
 
 ## Logic App Functionality
 
