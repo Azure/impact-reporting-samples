@@ -2,7 +2,7 @@
 
 Deploy the logic app to your Azure subscription by clicking the button below.
 
-[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FAzure%2Fimpact-reporting-samples%2Frefs%2Fheads%2Fcgaddam%2Fintroducing_lite_connector%2FOnboarding%2FConnector%2FLite%20Connector%2FWebHook%20LogicApp%2FWebHookLogicApp.json)
+[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FAzure%2Fimpact-reporting-samples%2Frefs%2Fheads%2Fmain%2FOnboarding%2FConnector%2FLite%20Connector%2FWebhook%20LogicApp%2FWebhookLogicApp.json)
 
 ## Prerequisites for ARM Template Deployment
 
