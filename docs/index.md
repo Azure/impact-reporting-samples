@@ -54,28 +54,6 @@ Below are steps needed to create an impact Connector for Azure Monitor Alerts
 | ------------- | ------------- |
 | **Contributor Permissions** | Needed at the subscription scope for executing steps related to: <li>Resource provider registration</li><li>Enable Connector preview feature</li><li>Create the Impact Connector resource</li> |
 | **User Access Administrator Permissions** | Needed at the subscription scope for executing steps related to: <li>Creating the custom role that enables the Connector to read alerts</li><li>Assigning the custom role to the Connector service</li> |
-| **Command line tools** | [Bash](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli) or [Powershell](https://learn.microsoft.com/en-us/powershell/azure/install-azure-powershell?view=azps-12.0.0) (*not needed if you are using CloudShell*)|
-| **Subscription Id**| A subscription ID, or a file containing a list of subscription IDs  whose alerts are of interest|
-
-#### Create a Connector - Command Line
-
-The deployment scripts does the following:
-* Registers your subscription(s) for Azure Impact Reporting private preview (pre-requisite for using Connectors)
-* Creates a connector resource (`microsoft.impact/connector`)
-* This connector will report an impact whenever an alert from those subscriptions fires
-
-##### 1. **Get the script**
-Go to the [Impact Reporting samples](https://github.com/Azure/impact-reporting-samples/tree/main/Onboarding/Connector/Scripts) githup repo and choose your script and choose either the bash or powershell script
-##### 2. **Execute in your environment**
-You will need to execute this script in your Azure environment.
-
-###### **Powershell**
-* Single Subscription: `./CreateImpactReportingConnector.ps1 -SubscriptionId <subid>`
-* Multiple subscriptions from file: `./CreateImpactReportingConnector.ps1 -FilePath './subscription_ids'`
-
-###### **Bash**
-* Single Subscription: `./create-impact-reporting-connector.sh --subscription-id <subid>`
-* Multiple subscriptions from file: `./create-impact-reporting-connector.sh --file_path './subscription_ids'
 
 Back to: 
 [[top](#azure-impact-reporting---documentation)]
@@ -100,74 +78,6 @@ Follow the steps below to create a Connector from the Azure Portal.
 
 Back to: 
 [[top](#azure-impact-reporting---documentation)]
-[[section](#troubleshoot)]
-
-#### Assigning Azure-Alerts-Reader-Role to the Connector
-
-1. Navigate to your subscription, and select **Access Control (IAM)** from the navigation blade
-2. Click **Add** and then click **Add role assignment**. This will open the **Add role assignment** page. 
-3. Under the **Role** tab, in the search bar, type *Azure-Alerts-Reader-Role*. If this role does not exist, head to [Creating the Azure-Alerts-Reader-Role](#creating-the-azure-alerts-reader-role) to create this role. Once the role is created, return back to this step.
-
-    ![Add custom role](assets/Role%20Selection.png)
-
-4. Select the *Azure-Alerts-Reader-Role* and click on **Next** button at the bottom of the page
-5. Under the **Members** tab, select **User, group, or service principal** for **Assign access to**.
-6. Click on **Select members**, which will open the **Select Members** blade on the right side.
-7. Enter **AzureImpactReportingConnector** in the search bar, and click on the AzureImpactReportingConnector application. Then click **Select** button.
-
-    ![Member Assignment](assets/Member%20Selection.png)
-
-8. Select the **Review + assign** button at the bottom of the page
-9. In the **Review + assign** tab, click on **Review + assign** button at the bottom of the page
-
-Back to: 
-[[top](#azure-impact-reporting---documentation)]
-[[section](#overview)]
-
-#### Creating the Azure-Alerts-Reader-Role
-1. Navigate to your subscription, and select **Access Control (IAM)** from the navigation blade
-2. Click **Add** and then click **Add custom role**. This will open the **Create a custom role** page
-
-    ![Add custom role](assets/Add%20Custom%20Role.png)
-
-3. Under the **Basics** tab, enter the name **Azure-Alerts-Reader-Role** for the **Custom role name**. Leave others as defaults and click on **Next** on the bottom of the page
-
-    ![Basics tab](assets/Basics%20Tab.png)
-
-4. Under the **Permissions** tab, click on **Add permissions**. On the right side, **Add permissions** blade will open
-
-    ![Basics tab](assets/Permissions%20Tab.png)
-
-5. Enter *Microsoft.AlertsManagement/alerts/read* in the search bar
-
-    ![Basics tab](assets/Add%20Permissions.png)
-
-6. Select the tile **Microsoft.AlertsManagement**, which will take you to the **Microsoft.AlertsManagement permissions** blade. Select the permission: **Read: Read alerts**. Click on **Add**
-
-    ![Permission Selection](assets/Permission%20Selection.png)
-
-7. Select the **Review + create** button at the bottom of the page
-8. In the **Review + create** tab, click on **Create** button at the bottom of the page
-
-Back to: 
-[[top](#azure-impact-reporting---documentation)]
-[[section](#overview)]
-
-
-## Impact Reporting Dynatrace connector
-This connector will allow Azure - Dynatrace customers to seemlessly send their problem - alerts from their Dynatrace tenant to Impact Reporting. In return, Azure Impact Reporting will provide valuable insights directly back to Dynatrace, accessible through their hub. This reciprocal exchange will empower users with deeper insights and a streamlined problem resolution process. 
-
-
-![image](assets/DTConnector.png)
-
-Back to: 
-[[top](#azure-impact-reporting---documentation)]
-[[section](#impact-reporting-dynatrace-connector)]
-
-### How it works
-This integration is based on the Impact Reporting app that will be uploaded and installed in customer's Dynatrace environment. On onboarding, the user will need to provide the list of Azure subscriptions that they would want to report an impact against, on behalf of their Azure Entra App. To note, this a 1: N relation, which means, a single app ID can be used for multiple subscriptions.(details below on the onboarding script and installation). Once the customer successfully installs the app and onboards to our program, impacts would be sent to Impact Reporting using a secure pipeline. Impact Reporting would receive an impact whenever a problem is triggered by DavisAI in Dynatrace. On the creation of the problem, Impact Reporting App would fetch required details from GRAIL, translate the problem into an impact and report it to Impact Reporting by making an authenticated REST call to ARM using a token generated by app details provided by customers during onboarding.
-
-Impact Reporting would consume these impacts reported by the app and feed it into multiple internal intelligent systems to correlate and provide insights back to the user. These insights will then be found on the users Dynatrace environment, by the home page of the app. 
 
 Important: This feature is in Private Preview. Visit here to review terms: https://azure.microsoft.com/en-us/support/legal/preview-supplemental-terms/
 
@@ -824,29 +734,8 @@ Back to:
 [[top](#azure-impact-reporting---documentation)]
 [[section](#tutorials)]
 ## Impact Reporting Connectors TSG
-#### The bash script fails immediately after starting
-Ensure that the script has execution permissions. Use the below command to make it executable.
-chmod `+x create-impact-reporting-connector.sh`
-
-#### In the bash script, azure login fails (az login command not working)
-Ensure [Azure CLI](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli) is installed and updated to the latest version. Try manually logging in using `az login` to check for any additional prompts or errors.
-
-#### Error "**Subscription ID or file path with list of subscription IDs required**"
-- **Bash**: Make sure you are providing either `--subscription-id` or `--file-path` argument when executing the script. Do not provide both. <br>
-- **Powershell**: Make sure to provide either the `-SubscriptionId` parameter or the  `-FilePath` parameter when invoking the script. Do not provide both.
-
-#### Error "**Failed to find file: [file_path]**"
-- **Bash**: Verify the file path provided with `--file-path` exists and is accessible. Ensure the correct path is used. <br>
-- **Powershell**: Verify the file path provided with `-FilePath` exists and is accessible. Ensure the correct path is used and the file is not locked or in use by another process.
-
-#### Script fails to execute with permission errors
-Ensure you have Contributor permission to log in to Azure, register resource providers, and create connectors in the Azure subscriptions. You also need to have `User Access Administrator` permission to create and assign custom roles.
-
-#### Script execution stops unexpectedly without completing
-Check if the Azure PowerShell module is installed and up to date. Use `Update-Module -Name Az` to update the Azure PowerShell module. Ensure `$ErrorActionPreference` is set to `Continue` temporarily to bypass non-critical errors.
-
 #### Namespace or feature registration takes too long or fails
-These operations can take several minutes. Ensure your Azure account has the Contributor access on the subscription(s). Re-run the script once the required access has been provided. If the issue persists on re-running reach out to the [Impact Reporting connectors team](mailto:impactrp-preview@microsoft.com).
+These operations can take several minutes. Ensure your Azure account has Contributor access on the subscription. Retry once the required access has been provided. If the issue persists, reach out to the [Impact Reporting connectors team](mailto:impactrp-preview@microsoft.com).
 
 #### Custom role creation or assignment fails
 1.	Ensure the Azure Service Principal `AzureImpactReportingConnector` exists by typing it into the Azure resource search box as shown below, if not wait for a few minutes for it to get created. If it does not get created even after an hour, reach out to the [Impact Reporting connectors team](mailto:impactrp-preview@microsoft.com).
@@ -855,7 +744,7 @@ These operations can take several minutes. Ensure your Azure account has the Con
 2.	Verify your account has `User Access Administrator` permission to create roles and assign them.
 #### Connector creation takes too long
 It may take 15-20 minutes for the namespace registration to allow the connector resource creation to take place. 
-If the script has not completed execution after 30 minutes, cancel the execution and re-run it. If this issue persists, reach out to the [Impact Reporting Connectors team](mailto:impactrp-preview@microsoft.com)
+If the deployment has not completed after 30 minutes, cancel it and retry. If this issue persists, reach out to the [Impact Reporting Connectors team](mailto:impactrp-preview@microsoft.com)
 
 #### Connector creation fails
 

@@ -231,4 +231,4 @@ To create the secret, simply re-run the script and provide 'Y' as the input when
 
 If you do not wish to generate the secret via the script please follow the instructions at [this link](https://learn.microsoft.com/en-us/entra/identity-platform/quickstart-register-app?tabs=client-secret#add-credentials) to create a client secret manually for the application 'DynatraceImpactReportingConnectorApp'
 
-This TSG and FAQs aim to cover common scenarios encountered while running the `CreateImpactReportingConnector.ps1` script. For issues not covered here, create a Github issue [here](https://github.com/Azure/impact-reporting-samples/issues/new?template=Blank+issue) or reach to our [support team](mailto:impactrp-preview@microsoft.com) for additional assistance.
+This TSG and FAQs aim to cover common scenarios encountered while running the `AzureImpactReportingOnboarding.ps1` script. For issues not covered here, create a Github issue [here](https://github.com/Azure/impact-reporting-samples/issues/new?template=Blank+issue) or reach to our [support team](mailto:impactrp-preview@microsoft.com) for additional assistance.
